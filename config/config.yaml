@@ -8,7 +8,7 @@ roi:
         frame: icrs
         lon: 6h35m46.50793015s
         lat: -75d16m16.81641826s
-    width: 5arcsec
+    width: 5 arcsec
     bin_size: 1.0
     energy_range:
         min: 0.5 keV

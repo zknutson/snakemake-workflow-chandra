@@ -246,25 +246,6 @@ class ROIConfig(DMCopyConfig):
         )
         return region
 
-    def region_shapely(self, wcs):
-        """ROI shape"""
-        from shapely.geometry import Polygon
-
-        region_pix = self.region.to_pixel(wcs=wcs)
-        return Polygon(region_pix.corners)
-
-    def intersects_fov(self, file_index):
-        """ROI intersects FoV"""
-        intersects = {}
-
-        roi_shape = self.region_shapely(wcs=file_index.wcs)
-
-        for name, shape in file_index.fov_regions_shapely.items():
-
-            intersects[name] = shape.intersects(roi_shape)
-
-        return intersects
-
     def to_ciao(self, file_index, file_index_ref=None, irf_label=None):
         """dmcopy argument"""
         config = CiaoToolsConfig().dmcopy.copy()

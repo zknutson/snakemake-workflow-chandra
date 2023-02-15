@@ -1,0 +1,16 @@
+rule bin_events:
+    input:
+        "results/{config_name}/{obs_id}/events/acisf{obs_id}_repro_evt2_reprojected.fits"
+    output:
+        "results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-counts.fits"
+    log: 
+        "logs/{config_name}/bin-events-{obs_id}.log"
+    conda:
+        "../envs/ciao-4.15.yaml"
+    params:
+        obs_id_ref = config['obs_id_ref']
+    shell:
+        "dmcopy "
+        "infile=results/{wildcards.config_name}/{wildcards.obs_id}/repro/acisf{wildcards.obs_id}_repro_evt2.fits "
+        "outfile={output} "
+        "match=results/{wildcards.config_name}/{wildcards.obs_id}/repro/acisf{params.obs_id_ref}_repro_evt2.fits"
