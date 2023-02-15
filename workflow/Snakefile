@@ -1,0 +1,22 @@
+# Add path to local module
+path_utils = workflow.source_path("utils/__init__.py")
+
+sys.path.insert(0, Path(path_utils).parent.as_posix())
+
+from snakemake.utils import min_version
+
+# set minimum snakemake version
+min_version("6.4.1")
+
+# setup config file
+configfile: "config/config.yaml"
+
+report: "report/workflow.rst"
+
+# load rules
+include: "rules/download_chandra_obsid.smk"
+
+# all rule 
+rule all:
+    input: 
+        expand("data/{obs_id}/", obs_id=config["obs_ids"]),

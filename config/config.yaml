@@ -80,7 +80,7 @@ ciao:
         numrays: null
         keepiter: false
         asolfile: null
-        marx_root: /Users/adonath/software/mambaforge/envs/gpxray-dev
+        marx_root: ''
         verbose: 1
         ra: 0.0
         dec: 0.0
