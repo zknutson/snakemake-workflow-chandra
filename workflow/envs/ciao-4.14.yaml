@@ -1,0 +1,17 @@
+name: ciao-4.14
+
+channels:
+  - conda-forge
+  - https://cxc.cfa.harvard.edu/conda/ciao
+  
+variables:
+  PYTHONNOUSERSITE: "1"
+  CONDA_SUBDIR: osx-64
+
+dependencies:
+  - python=3.9
+  - ciao=4.14
+  - sherpa=4.14
+  - ciao-contrib
+  - caldb_main
+  - marx

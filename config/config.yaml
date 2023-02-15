@@ -1,0 +1,164 @@
+name: my-analysis
+sub_name: my-config
+path_data: data
+obs_ids:
+- 62558
+obs_id_ref: 62558
+roi:
+    center:
+        frame: icrs
+        lon: 6h35m46.50793015s
+        lat: -75d16m16.81641826s
+    width: 5arcsec
+    bin_size: 1.0
+    energy_range:
+        min: 0.5 keV
+        max: 7.0 keV
+psf_simulator: marx
+irfs:
+    pks-0637:
+        spectrum:
+            center:
+                frame: icrs
+                lon: 6h35m46.50793015s
+                lat: -75d16m16.81641826s
+            radius: 3arcsec
+            energy_range:
+                min: 0.5 keV
+                max: 7.0 keV
+            energy_groups: 5
+            energy_step: 0.01
+        psf:
+            blur: 0.07
+            readout_streak: false
+            pileup: false
+            extended: true
+            minsize: null
+            numiter: 1
+ciao:
+    dmcopy:
+        kernel: default
+        option: null
+        verbose: 0
+        clobber: false
+    chandra_repro:
+        root: null
+        badpixel: true
+        process_events: true
+        destreak: true
+        set_ardlib: true
+        check_vf_pha: false
+        pix_adj: default
+        tg_zo_position: evt2
+        asol_update: true
+        pi_filter: true
+        cleanup: true
+        clobber: false
+        verbose: 1
+    reproject_events:
+        aspect: null
+        random: -1
+        geompar: geom
+        verbose: 0
+        clobber: false
+    simulate_psf:
+        monoenergy: null
+        flux: null
+        simulator: marx
+        rayfile: null
+        projector: marx
+        random_seed: -1
+        blur: 0.25
+        readout_streak: false
+        pileup: false
+        ideal: true
+        extended: true
+        binsize: 1.0
+        numsig: 7.0
+        minsize: null
+        numiter: 1
+        numrays: null
+        keepiter: false
+        asolfile: null
+        marx_root: /Users/adonath/software/mambaforge/envs/gpxray-dev
+        verbose: 1
+        ra: 0.0
+        dec: 0.0
+    specextract:
+        bkgfile: null
+        asp: null
+        dtffile: null
+        mskfile: null
+        rmffile: CALDB
+        badpixfile: null
+        dafile: CALDB
+        bkgresp: true
+        weight: true
+        weight_rmf: false
+        refcoord: null
+        correctpsf: false
+        combine: false
+        readout_streakspec: false
+        grouptype: NUM_CTS
+        binspec: '15'
+        bkg_grouptype: NONE
+        bkg_binspec: null
+        energy: 0.3:11.0:0.01
+        channel: 1:1024:1
+        energy_wmap: 300:2000
+        binarfcorr: '1'
+        binwmap: tdet=8
+        binarfwmap: '1'
+        parallel: true
+        nproc: null
+        tmpdir: ${ASCDS_WORK_PATH}
+        clobber: false
+        verbose: 1
+    asphist:
+        geompar: geom
+        res_xy: 0.5
+        res_roll: 600.0
+        max_bin: 10000.0
+        clobber: false
+        verbose: 0
+    mkinstmap:
+        mirror: HRMA
+        dafile: CALDB
+        ardlibparfile: ardlib.par
+        geompar: geom
+        verbose: 0
+        clobber: false
+    mkexpmap:
+        normalize: false
+        geompar: geom
+        verbose: 0
+        clobber: false
+saotrace:
+    tag: foo
+    srcpars: src.lua
+    shells: all
+    tstart: 0.0
+    z: 10079.774
+    src: default
+    output: default
+    output_fmt: fits-axaf
+    output_coord: hrma
+    output_fields: min
+    limit_type: sec
+    seed1: 1
+    seed2: 1
+    block: 0
+    block_inc: 100
+    focus: 'no'
+    tally: 0
+    throttle: -1
+    throttle_poisson: 'no'
+    config_dir: ${SAOTRACE_DB}/ts_config
+    config_db: orbit-200809-01f-a
+    clean: all
+    debug:
+    - ''
+    help: 'no'
+    version: 'no'
+    mode: a
+    limit: 0.01

@@ -1,8 +1,9 @@
 # Conda environment for reducing fermi data
-name: snakemake-workflow-fermi-lat
+name: snakemake-workflow-chandra
 
 channels:
   - conda-forge
+  - https://cxc.cfa.harvard.edu/conda/ciao
 
 variables:
   PYTHONNOUSERSITE: "1"
@@ -13,4 +14,4 @@ dependencies:
   - pydantic>=1.9.0
   - astropy>=5.2
   - gammapy>=v1.0
-  - fermitools>=2.2.0
+  - ciao-contrib
