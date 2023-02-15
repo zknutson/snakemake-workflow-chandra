@@ -4,8 +4,7 @@ rule download_chandra_obsid:
     log: 
         "logs/download-chandra-obsid-{obs_id}.log"
     conda:
-        "ciao-4.14"
+        "../envs/ciao-4.15.yaml"
     shell:
         "cd data; "
-        "which python;"
         "download_chandra_obsid {wildcards.obs_id} --exclude vvref"
