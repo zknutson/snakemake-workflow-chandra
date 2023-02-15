@@ -32,7 +32,7 @@ irfs:
             readout_streak: false
             pileup: false
             extended: true
-            minsize: null
+            minsize: 125
             numiter: 1
 ciao:
     dmcopy:
@@ -48,7 +48,6 @@ ciao:
         set_ardlib: true
         check_vf_pha: false
         pix_adj: default
-        tg_zo_position: evt2
         asol_update: true
         pi_filter: true
         cleanup: true
@@ -113,25 +112,6 @@ ciao:
         tmpdir: ${ASCDS_WORK_PATH}
         clobber: false
         verbose: 1
-    asphist:
-        geompar: geom
-        res_xy: 0.5
-        res_roll: 600.0
-        max_bin: 10000.0
-        clobber: false
-        verbose: 0
-    mkinstmap:
-        mirror: HRMA
-        dafile: CALDB
-        ardlibparfile: ardlib.par
-        geompar: geom
-        verbose: 0
-        clobber: false
-    mkexpmap:
-        normalize: false
-        geompar: geom
-        verbose: 0
-        clobber: false
 saotrace:
     tag: foo
     srcpars: src.lua

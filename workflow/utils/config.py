@@ -3,7 +3,7 @@ import logging
 import os
 from enum import Enum
 from pathlib import Path
-from typing import ClassVar, Dict, List
+from typing import ClassVar, Dict, List, Optional
 
 import numpy as np
 import yaml
@@ -11,10 +11,9 @@ from astropy import units as u
 from astropy.coordinates import Angle, SkyCoord
 from astropy.time import Time
 from astropy.units import Quantity
-from ciao_contrib import runtool
 from gammapy.analysis.config import AngleType, EnergyType, FrameEnum
 from gammapy.utils.scripts import make_path, read_yaml
-from pydantic import BaseModel, create_model
+from pydantic import BaseModel
 from regions import CircleSkyRegion, RectangleSkyRegion
 
 log = logging.getLogger(__name__)
@@ -24,49 +23,6 @@ MARX_ROOT = os.environ.get("CONDA_PREFIX", "${MARX_ROOT}")
 
 # This will keep the intermediate marx simulation files
 # os.environ["SAVE_ALL"] = ""
-
-CIAO_TOOLS_TYPES = {"f": str, "i": int, "s": str, "b": bool, "r": float}
-
-CIAO_TOOLS_REQUIRED = {
-    "dmcopy": {
-        "infile": "{file_index.filename_repro_evt2_reprojected}",
-        "outfile": "{file_index.filename_counts}",
-    },
-    "simulate_psf": {
-        "infile": "{file_index.filename_repro_evt2_reprojected}",
-        "outroot": "{{file_index.paths_psf_marx[{irf_label}]}}",
-        "spectrumfile": "{{file_index.filenames_spectra[{irf_label}]}}",
-    },
-    "chandra_repro": {
-        "indir": "{file_index.path_obs_id}",
-        "outdir": "{file_index.path_repro}",
-    },
-    "specextract": {
-        "infile": "{file_index.filename_repro_evt2_reprojected}",
-        "outroot": "{{file_index.paths_spectra_pha[{irf_label}]}}/{irf_label}",
-    },
-    "reproject_events": {
-        "infile": "{file_index.filename_repro_evt2}",
-        "outfile": "{file_index.filename_repro_evt2_reprojected}",
-        "match": "{file_index_ref.filename_repro_evt2}",
-    },
-    "asphist": {
-        "infile": "{file_index.filenames_repro_asol}",
-        "outfile": "{file_index.filename_repro_asp_hist}",
-        "evtfile": "{file_index.filename_repro_evt2_reprojected}",
-    },
-    "mkinstmap": {
-        "outfile": "{file_index.filename_repro_inst_map}",
-        "spectrumfile": "{{file_index.filenames_spectra[{irf_label}]}}",
-        "obsfile": "{file_index.filename_repro_evt2_reprojected}[EVENTS]",
-        "detsubsys": "ACIS-1",  # TODO: this should include all CCDs?
-    },
-    "mkexpmap": {
-        "asphistfile": "{file_index.filename_repro_asp_hist}",
-        "outfile": "{file_index.filename_exposure}",
-        "instmapfile": "{file_index.filename_repro_inst_map}",
-    },
-}
 
 SRCPARS_TEMPLATE = """
 ra_pnt   = {{file_index.ra_pnt}}
@@ -136,60 +92,114 @@ def to_ciao_name(name):
 class CiaoBaseConfig(BaseConfig):
     """Ciao tools base config"""
 
-    _tool_name: ClassVar
+    verbose: int = 1
+    clobber: bool = False
 
-    def to_ciao(self, file_index, file_index_ref=None, irf_label=None):
-        """Convert to ciao config dict"""
-        kwargs = self.dict()
-
-        for name, value in CIAO_TOOLS_REQUIRED[self._tool_name].items():
-            ciao_name = to_ciao_name(name)
-
-            if not isinstance(value, str):
-                continue
-
-            if irf_label and "irf_label" in value:
-                value = value.format(irf_label=irf_label)
-
-            kwargs[ciao_name] = value.format(
-                file_index=file_index,
-                file_index_ref=file_index_ref,
-            )
-
-        return kwargs
+    def to_cmd_args(self):
+        """To cmd args"""
+        data = self.dict()
+        return " ".join([f"{key}={value}" for key, value in data.items()])
 
 
-def create_ciao_config(tool_name, model_name):
-    """Create config class"""
-    par_opts = runtool.parinfo[tool_name]["opt"]
-
-    if tool_name == "simulate_psf":
-        pars = [
-            par
-            for par in runtool.parinfo[tool_name]["req"]
-            if par.name in ["ra", "dec"]
-        ]
-        par_opts.extend(pars)
-
-    parameters = {}
-
-    for par in par_opts:
-        parameters[par.name] = (CIAO_TOOLS_TYPES[par.type], par.default)
-
-    model = create_model(model_name, __base__=CiaoBaseConfig, **parameters)
-    model._tool_name = tool_name
-
-    return model
+class DmCopyOptionEnum(str, Enum):
+    all = "all"
+    image = "image"
+    bare = "bare"
+    none = "none"
 
 
-DMCopyConfig = create_ciao_config("dmcopy", "DMCopyConfig")
-ChandraReproConfig = create_ciao_config("chandra_repro", "ChandraReproConfig")
-ReprojectEventsConfig = create_ciao_config("reproject_events", "ReprojectEventsConfig")
-SimulatePSFConfig = create_ciao_config("simulate_psf", "SimulatePSFConfig")
-SpecExtractConfig = create_ciao_config("specextract", "SpecExtractConfig")
-AspHistConfig = create_ciao_config("asphist", "AspHistConfig")
-MkInstMapConfig = create_ciao_config("mkinstmap", "MkInstMapConfig")
-MkExpMapConfig = create_ciao_config("mkexpmap", "MkExpMapConfig")
+class PixAdjEnum(str, Enum):
+    edser = "edser"
+    default = "default"
+
+
+class PSFSimulatorEnum(str, Enum):
+    marx = "marx"
+    saotrace = "saotrace"
+    file = "file"
+
+
+class GroupTypeEnum(str, Enum):
+    num_cts = "NUM_CTS"
+    none = "NONE"
+
+
+class DMCopyConfig(CiaoBaseConfig):
+    kernel: str = "default"
+    option: Optional[DmCopyOptionEnum] = "none"
+
+
+class ChandraReproConfig(CiaoBaseConfig):
+    root: Optional[str] = ""
+    badpixel: bool = True
+    process_events: bool = True
+    destreak: bool = True
+    set_ardlib: bool = True
+    check_vf_pha: bool = False
+    pix_adj: PixAdjEnum = "default"
+    asol_update: bool = True
+    pi_filter: bool = True
+    cleanup: bool = True
+
+
+class ReprojectEventsConfig(CiaoBaseConfig):
+    aspect: Optional[str] = ""
+    random: int = -1
+    geompar: str = "geom"
+
+
+class SimulatePSFConfig(CiaoBaseConfig):
+    monoenergy: float = None
+    flux: float = None
+    simulator: PSFSimulatorEnum = "marx"
+    rayfile: Optional[str] = ""
+    projector: str = "marx"
+    random_seed: int = -1
+    blur: float = 0.25
+    readout_streak: bool = False
+    pileup: bool = False
+    ideal: bool = True
+    extended: bool = True
+    binsize: float = 1.0
+    numsig: float = 7.0
+    minsize: Optional[int] = None
+    numiter: int = 1
+    numrays: Optional[int] = None
+    keepiter: bool = False
+    asolfile: Optional[str] = None
+    marx_root: str = ""
+    ra: float = 0.0
+    dec: float = 0.0
+
+
+class SpecExtractConfig(CiaoBaseConfig):
+    bkgfile: Optional[str] = None
+    asp: Optional[str] = ""
+    dtffile: Optional[str] = None
+    mskfile: Optional[str] = None
+    rmffile: str = "CALDB"
+    badpixfile: Optional[str] = ""
+    dafile: str = "CALDB"
+    bkgresp: bool = True
+    weight: bool = True
+    weight_rmf: bool = False
+    refcoord: Optional[str] = None
+    correctpsf: bool = False
+    combine: bool = False
+    readout_streakspec: bool = False
+    grouptype: GroupTypeEnum = "NUM_CTS"
+    binspec: str = "15"
+    bkg_grouptype: GroupTypeEnum = "NONE"
+    bkg_binspec: Optional[str] = None
+    energy: str = "0.3:11.0:0.01"
+    channel: str = "1:1024:1"
+    energy_wmap: str = "300:2000"
+    binarfcorr: str = "1"
+    binwmap: str = "tdet=8"
+    binarfwmap: str = "1"
+    parallel: bool = False
+    nproc: Optional[int] = None
+    tmpdir: str = "${ASCDS_WORK_PATH}"
 
 
 class CiaoToolsConfig(BaseConfig):
@@ -198,19 +208,11 @@ class CiaoToolsConfig(BaseConfig):
     reproject_events: ReprojectEventsConfig = ReprojectEventsConfig()
     simulate_psf: SimulatePSFConfig = SimulatePSFConfig(marx_root=MARX_ROOT, blur=0.25)
     specextract: SpecExtractConfig = SpecExtractConfig()
-    asphist: AspHistConfig = AspHistConfig()
-    mkinstmap: MkInstMapConfig = MkInstMapConfig()
-    mkexpmap: MkExpMapConfig = MkExpMapConfig(normalize=False)
 
 
 class EnergyRangeConfig(BaseConfig):
     min: EnergyType = 0.5 * u.keV
     max: EnergyType = 7 * u.keV
-
-
-class PSFSimulatorEnum(str, Enum):
-    marx = "marx"
-    saotrace = "saotrace"
 
 
 class SkyCoordConfig(BaseConfig):
@@ -435,55 +437,9 @@ def region_to_ciao_str(region, wcs, bin_size):
     return f"{bbox.ixmin}:{bbox.ixmax}:#{nx},{bbox.iymin}:{bbox.iymax}:#{ny}"
 
 
-class PerSourceMkInstMapConfig(MkInstMapConfig):
-    roi = ROIConfig()
-
-    def to_ciao(self, file_index, file_index_ref=None, irf_label=None):
-        """To ciao config"""
-        config = CiaoToolsConfig().mkinstmap
-
-        kwargs = config.to_ciao(
-            file_index=file_index, file_index_ref=file_index_ref, irf_label=irf_label
-        )
-        kwargs["pixelgrid"] = region_to_ciao_str(
-            region=self.roi.region, wcs=file_index.wcs, bin_size=self.roi.bin_size
-        )
-
-        intersections = self.roi.intersects_fov(file_index=file_index)
-
-        for key, value in intersections.items():
-            if value:
-                idx = key
-                break
-        else:
-            raise ValueError("No overlap betwen ROI and CCD FoV")
-
-        kwargs["detsubsys"] = f"ACIS-{idx}"
-        return kwargs
-
-
-class PerSourceMkExpMapConfig(MkExpMapConfig):
-    roi = ROIConfig()
-
-    def to_ciao(self, file_index, file_index_ref=None, irf_label=None):
-        """To ciao config"""
-        config = CiaoToolsConfig().mkexpmap
-
-        kwargs = config.to_ciao(
-            file_index=file_index, file_index_ref=file_index_ref, irf_label=irf_label
-        )
-
-        kwargs["xygrid"] = region_to_ciao_str(
-            region=self.roi.region, wcs=file_index.wcs, bin_size=self.roi.bin_size
-        )
-        return kwargs
-
-
 class IRFConfig(BaseConfig):
     spectrum: PerSourceSpecExtractConfig = PerSourceSpecExtractConfig()
     psf: PerSourceSimulatePSFConfig = PerSourceSimulatePSFConfig()
-    aeff: PerSourceMkInstMapConfig = PerSourceMkInstMapConfig()
-    exposure: PerSourceMkExpMapConfig = PerSourceMkExpMapConfig()
 
     class Config:
         fields = {
@@ -515,8 +471,6 @@ class ChandraConfig(BaseConfig):
 
         for config in self.irfs.values():
             config.psf.binsize = self.roi.bin_size
-            config.aeff.roi = self.roi
-            config.exposure.roi = self.roi
 
             if self.psf_simulator == PSFSimulatorEnum.saotrace:
                 config.psf.simulator = "file"
