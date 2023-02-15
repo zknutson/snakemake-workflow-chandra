@@ -1,12 +1,16 @@
 rule reproject_events:
     input:
-        infile = "data/{obs_id}/repro/acisf{obs_id:05d}_repro_evt2.fits",
-        match = "data/{obs_id}/repro/acisf{config[obs_id_ref]:05d}_repro_evt2.fits"
+        "results/{config_name}/{obs_id}/repro/"
     output:
-        "data/{obs_id}/repro/acisf{obs_id:05d}_repro_evt2_reprojected.fits",
+        "results/{config_name}/{obs_id}/events/acisf{obs_id}_repro_evt2_reprojected.fits"
     log: 
-        "logs/reproject-events-{obs_id}.log"
+        "logs/{config_name}/reproject-events-{obs_id}.log"
     conda:
         "../envs/ciao-4.15.yaml"
+    params:
+        obs_id_ref = config['obs_id_ref']
     shell:
-        "reproject_events infile={input.infile} outfile={output} match={input.match}"
+        "reproject_events "
+        "infile=results/{wildcards.config_name}/{wildcards.obs_id}/repro/acisf{wildcards.obs_id}_repro_evt2.fits "
+        "outfile={output} "
+        "match=results/{wildcards.config_name}/{wildcards.obs_id}/repro/acisf{params.obs_id_ref}_repro_evt2.fits"

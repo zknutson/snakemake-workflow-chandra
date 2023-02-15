@@ -16,10 +16,12 @@ report: "report/workflow.rst"
 # load rules
 include: "rules/download_chandra_obsid.smk"
 include: "rules/chandra_repro.smk"
+include: "rules/reproject_events.smk"
 
-#ruleorder: chandra_repro > download_chandra_obsid
+
+obs_ids = [f"{obs_id:05d}" for obs_id in config["obs_ids"]]
 
 # all rule 
 rule all:
     input:
-        expand("results/{config_name}/{obs_id}/repro", obs_id=config["obs_ids"], config_name=config["name"])
+        expand("results/{config_name}/{obs_id}/events/acisf{obs_id}_repro_evt2_reprojected.fits", obs_id=obs_ids, config_name=config["name"])
