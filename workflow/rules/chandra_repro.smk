@@ -2,7 +2,7 @@ rule chandra_repro:
     input:
         "data/{obs_id}/oif.fits"
     output:
-        directory("data/{obs_id}/repro")
+        directory("results/{obs_id}-repro")
     log: 
         "logs/chandra-repro-{obs_id}.log"
     conda:
