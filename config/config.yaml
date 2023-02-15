@@ -1,5 +1,4 @@
-name: my-analysis
-sub_name: my-config
+name: my-config
 path_data: data
 obs_ids:
 - 62558

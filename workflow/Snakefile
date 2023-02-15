@@ -15,11 +15,11 @@ report: "report/workflow.rst"
 
 # load rules
 include: "rules/download_chandra_obsid.smk"
-#include: "rules/chandra_repro.smk"
+include: "rules/chandra_repro.smk"
 
 #ruleorder: chandra_repro > download_chandra_obsid
 
 # all rule 
 rule all:
     input:
-        expand("data/{obs_id}", obs_id=config["obs_ids"]),
+        expand("results/{config_name}/{obs_id}/repro", obs_id=config["obs_ids"], config_name=config["name"])
