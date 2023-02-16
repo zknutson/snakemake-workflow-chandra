@@ -1,3 +1,12 @@
+from utils.io import wcs_from_header_chandra
+from astropy.io import fits
+
+def dmcopy_selection_str(wildcards, input):
+    header = fits.getheader(input[0], "EVENTS")
+    wcs = wcs_from_header_chandra(header)
+    return config_obj.roi.to_dm_copy_str(wcs=wcs)
+
+
 rule bin_events:
     input:
         "results/{config_name}/{obs_id}/events/acisf{obs_id}_repro_evt2_reprojected.fits"
@@ -8,9 +17,6 @@ rule bin_events:
     conda:
         "../envs/ciao-4.15.yaml"
     params:
-        obs_id_ref = config['obs_id_ref']
+        selection = dmcopy_selection_str
     shell:
-        "dmcopy "
-        "infile=results/{wildcards.config_name}/{wildcards.obs_id}/repro/acisf{wildcards.obs_id}_repro_evt2.fits "
-        "outfile={output} "
-        "match=results/{wildcards.config_name}/{wildcards.obs_id}/repro/acisf{params.obs_id_ref}_repro_evt2.fits"
+        "dmcopy '{input}{params.selection}' {output}"

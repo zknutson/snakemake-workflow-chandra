@@ -248,14 +248,9 @@ class ROIConfig(DMCopyConfig):
         )
         return region
 
-    def to_ciao(self, file_index, file_index_ref=None, irf_label=None):
+    def to_dm_copy_str(self, wcs):
         """dmcopy argument"""
-        config = CiaoToolsConfig().dmcopy.copy()
-        kwargs = config.to_ciao(
-            file_index=file_index, file_index_ref=file_index_ref, irf_label=irf_label
-        )
-
-        bbox = self.region.to_pixel(wcs=file_index.wcs).bounding_box
+        bbox = self.region.to_pixel(wcs=wcs).bounding_box
         spatial = (
             f"bin x={bbox.ixmin}:{bbox.ixmax}:{self.bin_size}, "
             f"y={bbox.iymin}:{bbox.iymax}:{self.bin_size}"
@@ -266,8 +261,7 @@ class ROIConfig(DMCopyConfig):
 
         selection = f"[EVENTS][{spatial}]"
         selection += f"[{spectral}]"
-        kwargs["infile"] += selection
-        return kwargs
+        return selection
 
 
 # TODO: improve config types based on https://cxc.harvard.edu/cal/Hrma/Raytrace/Trace-nest.html

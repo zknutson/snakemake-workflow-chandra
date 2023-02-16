@@ -18,6 +18,7 @@ report: "report/workflow.rst"
 include: "rules/download_chandra_obsid.smk"
 include: "rules/chandra_repro.smk"
 include: "rules/reproject_events.smk"
+include: "rules/bin_events.smk"
 
 
 obs_ids = [f"{obs_id:05d}" for obs_id in config_obj.obs_ids]
@@ -25,4 +26,4 @@ obs_ids = [f"{obs_id:05d}" for obs_id in config_obj.obs_ids]
 # all rule 
 rule all:
     input:
-        expand("results/{config_name}/{obs_id}/events/acisf{obs_id}_repro_evt2_reprojected.fits", obs_id=obs_ids, config_name=config_obj.name)
+        expand("results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-counts.fits", obs_id=obs_ids, config_name=config_obj.name)
