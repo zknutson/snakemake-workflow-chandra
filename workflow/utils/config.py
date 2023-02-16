@@ -397,28 +397,21 @@ class PerSourceSpecExtractConfig(SpecExtractConfig):
         """Spectral extraction region"""
         return CircleSkyRegion(center=self.center.sky_coord, radius=self.radius)
 
-    def to_ciao(self, file_index, file_index_ref=None, irf_label=None):
+    def to_region_str(self, wcs):
         """Spectrum extract region to ciao config"""
-        config = CiaoToolsConfig().specextract.copy()
-        kwargs = config.to_ciao(
-            file_index=file_index, file_index_ref=file_index_ref, irf_label=irf_label
-        )
-        infile = kwargs["infile"]
-        region_pix = self.region.to_pixel(wcs=file_index.wcs)
+        region_pix = self.region.to_pixel(wcs=wcs)
         x, y = region_pix.center.x, region_pix.center.y
-        kwargs["infile"] = infile + f"[sky=circle({x},{y},{region_pix.radius})]"
+        return f"[sky=circle({x},{y},{region_pix.radius})]"
 
+    def to_energy_str(self):
+        """Convert energy definition to string"""
         energy = self.energy_range
         selection = f"{energy.min.to_value('keV')}:{energy.max.to_value('keV')}:{self.energy_step}"
-        kwargs["energy"] = selection
+        return selection
 
-        if self.background_region_file:
-            kwargs["bkgfile"] = (
-                infile + f"[(x,y)=region({self.background_region_file})]"
-            )
-            kwargs["bkgresp"] = "yes"
-
-        return kwargs
+    def to_background_str(self):
+        """Convert bkg definition to string"""
+        return f"[(x,y)=region({self.background_region_file})]"
 
 
 def region_to_ciao_str(region, wcs, bin_size):
