@@ -1,0 +1,12 @@
+name: default
+
+channels:
+  - conda-forge
+  
+variables:
+  PYTHONNOUSERSITE: "1"
+
+dependencies:
+  - python=3.9
+  - astropy>=5.2
+  - numpy>=1.24
