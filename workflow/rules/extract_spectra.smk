@@ -13,8 +13,9 @@ def spec_extract_selection_energy_str(wildcards, input):
     return config_spec.to_energy_str()
 
 def get_outroot(wildcards, output):
-    filename =  f"{wildcards.config_name}-{wildcards.obs_id}-{wildcards.irf_label}"
-    return os.path.join(output[0], filename)
+    path = f"results/{wildcards.config_name}/{wildcards.obs_id}/spectra/{wildcards.irf_label}"
+    filename_stem =  f"{wildcards.config_name}-{wildcards.obs_id}-{wildcards.irf_label}"
+    return os.path.join(path, filename_stem)
 
 
 rule extract_spectra:

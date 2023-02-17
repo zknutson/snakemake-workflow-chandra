@@ -4,7 +4,6 @@ rule fit_spectra:
     output:
         "results/{config_name}/spectral-fit/{irf_label}/{config_name}-{irf_label}-source-flux-chart.dat",
         "results/{config_name}/spectral-fit/{irf_label}/{config_name}-{irf_label}-spectral-model.yaml",
-        "results/{config_name}/spectral-fit/{irf_label}/{config_name}-{irf_label}-source-flux-chart.rdb",
     log:
         notebook="results/{config_name}/notebooks/{config_name}-{irf_label}-fit-spectra.ipynb"
     conda:

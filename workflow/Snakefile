@@ -5,6 +5,7 @@ sys.path.insert(0, Path(path_utils).parent.as_posix())
 
 from snakemake.utils import min_version
 from utils.config import ChandraConfig
+from utils.io import write_sherpa_model_to_yaml
 
 # set minimum snakemake version
 min_version("6.4.1")
