@@ -16,6 +16,9 @@ config_obj = ChandraConfig.read("config/config.yaml")
 
 report: "report/workflow.rst"
 
+wildcard_constraints:
+    obs_id="\d+"
+
 # load rules
 include: "rules/download_chandra_obsid.smk"
 include: "rules/chandra_repro.smk"
@@ -24,6 +27,8 @@ include: "rules/bin_events.smk"
 include: "rules/compute_exposure.smk"
 include: "rules/extract_spectra.smk"
 include: "rules/fit_spectra.smk"
+include: "rules/simulate_psf.smk"
+include: "rules/project_psf.smk"
 
 
 obs_ids = [f"{obs_id:05d}" for obs_id in config_obj.obs_ids]
@@ -32,4 +37,5 @@ irf_labels = list(config_obj.irfs)
 # all rule 
 rule all:
     input:
-        expand("results/{config_name}/{obs_id}/spectra/{irf_label}/", obs_id=obs_ids, config_name=config_obj.name, irf_label=irf_labels)
+        expand("results/{config_name}/maps/{config_name}-{obs_id}-{irf_label}-psf.fits", obs_id=obs_ids, config_name=config_obj.name, irf_label=irf_labels),
+        expand("results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-exposure.fits", obs_id=obs_ids, config_name=config_obj.name, irf_label=irf_labels),

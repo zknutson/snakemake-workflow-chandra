@@ -9,7 +9,7 @@ def dmcopy_selection_str(wildcards, input):
 
 rule bin_events:
     input:
-        "results/{config_name}/{obs_id}/events/acisf{obs_id}_repro_evt2_reprojected.fits"
+        "results/{config_name}/{obs_id}/events/{config_name}-{obs_id}-events.fits"
     output:
         "results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-counts.fits"
     log: 

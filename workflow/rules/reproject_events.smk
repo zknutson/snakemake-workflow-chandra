@@ -2,7 +2,7 @@ rule reproject_events:
     input:
         "results/{config_name}/{obs_id}/repro/"
     output:
-        "results/{config_name}/{obs_id}/events/acisf{obs_id}_repro_evt2_reprojected.fits"
+        "results/{config_name}/{obs_id}/events/{config_name}-{obs_id}-events.fits"
     log: 
         "logs/{config_name}/reproject-events-{obs_id}.log"
     conda:

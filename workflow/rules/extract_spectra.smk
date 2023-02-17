@@ -19,9 +19,12 @@ def get_outroot(wildcards, output):
 
 rule extract_spectra:
     input:
-        "results/{config_name}/{obs_id}/events/acisf{obs_id}_repro_evt2_reprojected.fits"
+        "results/{config_name}/{obs_id}/events/{config_name}-{obs_id}-events.fits"
     output:
-        directory("results/{config_name}/{obs_id}/spectra/{irf_label}/")
+        "results/{config_name}/{obs_id}/spectra/{irf_label}/{config_name}-{obs_id}-{irf_label}.pi",
+        "results/{config_name}/{obs_id}/spectra/{irf_label}/{config_name}-{obs_id}-{irf_label}.arf",
+        "results/{config_name}/{obs_id}/spectra/{irf_label}/{config_name}-{obs_id}-{irf_label}.rmf",
+        "results/{config_name}/{obs_id}/spectra/{irf_label}/{config_name}-{obs_id}-{irf_label}_grp.pi",
     log: 
         "logs/{config_name}/extract-spectra-{obs_id}-{irf_label}.log"
     conda:
