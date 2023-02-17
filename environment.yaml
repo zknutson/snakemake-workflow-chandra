@@ -14,3 +14,4 @@ dependencies:
   - pydantic>=1.9.0
   - astropy>=5.2
   - gammapy>=v1.0
+  - jupyter

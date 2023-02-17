@@ -23,6 +23,7 @@ include: "rules/reproject_events.smk"
 include: "rules/bin_events.smk"
 include: "rules/compute_exposure.smk"
 include: "rules/extract_spectra.smk"
+include: "rules/fit_spectra.smk"
 
 
 obs_ids = [f"{obs_id:05d}" for obs_id in config_obj.obs_ids]
