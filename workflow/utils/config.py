@@ -98,6 +98,14 @@ class CiaoBaseConfig(BaseConfig):
     def to_cmd_args(self):
         """To cmd args"""
         data = self.dict()
+
+        for key, value in data.items():
+            if value is True:
+                data[key] = "yes"
+
+            if value is False:
+                data[key] = "no"
+
         return " ".join([f"{key}={value}" for key, value in data.items()])
 
 
@@ -346,27 +354,15 @@ class PerSourceSimulatePSFConfig(SimulatePSFConfig):
             "blur": {"include": True},
         }
 
-    def to_ciao(self, file_index, file_index_ref=None, irf_label=None, idx=0):
+    def dict(self):
         """Spectrum extract region to ciao config"""
-        config = CiaoToolsConfig().simulate_psf.copy()
-        kwargs = config.to_ciao(
-            file_index=file_index, file_index_ref=file_index_ref, irf_label=irf_label
-        )
-
-        kwargs.update(self.dict())
+        kwargs = super().dict()
 
         # Those are non visible linked parameters
         kwargs["ra"] = self.ra
         kwargs["dec"] = self.dec
         kwargs["binsize"] = self.binsize
         kwargs["simulator"] = self.simulator
-
-        if self.simulator == "file":
-            path_base = file_index.paths_psf_saotrace[irf_label]
-            filenames = path_base.glob(SAOTRACE_OUTPUT_FILENAME.format(idx="*"))
-            kwargs["rayfile"] = ",".join([str(filename) for filename in filenames])
-            kwargs["outroot"] = file_index.paths_psf_saotrace[irf_label]
-
         return kwargs
 
 

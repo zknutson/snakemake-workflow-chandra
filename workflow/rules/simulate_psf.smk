@@ -1,6 +1,8 @@
 def get_simulate_psf_args(wildcards):
     config_psf = config_obj.irfs[wildcards.irf_label].psf
-    return config_psf.to_cmd_args()
+    args = config_psf.to_cmd_args()
+    print(args)
+    return args
 
 rule simulate_psf:
     input:
