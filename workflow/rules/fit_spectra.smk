@@ -5,7 +5,7 @@ rule fit_spectra:
         "results/{config_name}/spectral-fit/{irf_label}/{config_name}-{irf_label}-source-flux-chart.dat",
         "results/{config_name}/spectral-fit/{irf_label}/{config_name}-{irf_label}-spectral-model.yaml",
     log:
-        notebook="results/{config_name}/notebooks/{config_name}-{irf_label}-fit-spectra.ipynb"
+        notebook="results/{config_name}/spectral-fit/{irf_label}/{config_name}-{irf_label}-spectral-fit.ipynb"
     conda:
         "../envs/ciao-4.15.yaml"
     notebook:
