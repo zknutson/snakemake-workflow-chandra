@@ -6,6 +6,21 @@ and produce as output FITS files. Thereby it will handle the reduction of
  counts, exposure and point spread function (PSF).
 
 ## Getting Started
+### Use as Snakemake Module (recommended)
+
+If you would like use this as Snakmake module you should add e.g. the following to your `Snakefile`:
+
+```python3
+module chandra_data_workflow:
+    snakefile:
+        # here, plain paths, URLs and the special markers for code hosting providers (see below) are possible.
+        github("adonath/snakemake-workflow-chandra", path="workflow/Snakefile", branch="main")
+    config: config["fermi-lat-data"]
+
+use rule * from chandra_data_workflow as chandra_data_*
+```
+
+See also https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#modularization
 
 ### Setup Environment 
 Start by cloning this repository to your local machine:
