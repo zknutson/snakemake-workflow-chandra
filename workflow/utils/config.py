@@ -171,11 +171,11 @@ class SimulatePSFConfig(CiaoBaseConfig):
     binsize: float = 1.0
     numsig: float = 7.0
     minsize: Optional[int] = None
-    numiter: int = 1
+    numiter: int = 2
     numrays: Optional[int] = None
     keepiter: bool = False
     asolfile: Optional[str] = None
-    marx_root: str = ""
+    marx_root: str = MARX_ROOT
     ra: float = 0.0
     dec: float = 0.0
 

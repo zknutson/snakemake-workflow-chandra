@@ -9,12 +9,13 @@ rule simulate_psf:
         infile="results/{config_name}/{obs_id}/events/{config_name}-{obs_id}-events.fits",
         spectrum="results/{config_name}/spectral-fit/{irf_label}/{config_name}-{irf_label}-source-flux-chart.dat",
     output:
-        directory("results/{config_name}/{obs_id}/psf/{irf_label}/{config[psf_simulator]}/")
+        directory("results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}")
     log: 
-        "logs/{config_name}/{obs_id}/{config_name}-{obs_id}-{irf_label}-simulate-psf.log"
+        "logs/{config_name}/{obs_id}/{config_name}-{obs_id}-{irf_label}-{psf_simulator}-simulate-psf.log"
     conda:
         "../envs/ciao-4.15.yaml"
     params:
         args = get_simulate_psf_args
     shell:
-        "simulate_psf infile={input.infile} outroot={output} spectrum={input.spectrum} {params.args}"
+        "export MARX_ROOT=$CONDA_PREFIX;"
+        "simulate_psf infile={input.infile} outroot={output} spectrum={input.spectrum} keepiter=yes {params.args}"

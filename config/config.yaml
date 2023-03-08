@@ -33,7 +33,7 @@ irfs:
             pileup: false
             extended: true
             minsize: 125
-            numiter: 1
+            numiter: 2
 ciao:
     dmcopy:
         kernel: default
