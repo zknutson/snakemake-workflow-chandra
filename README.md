@@ -1,4 +1,7 @@
+
 # Snakemake Workflow for Chandra Data Reduction
+
+WARNING: this is currently broken, but I will fix and update in the coming few weeks...
 
 This is an example snakemake workflow for data reduction of Chandra data. 
 The workflow will run the standrad `ciao` tools for a given configuration
