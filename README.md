@@ -18,7 +18,7 @@ module chandra_data_workflow:
     snakefile:
         # here, plain paths, URLs and the special markers for code hosting providers (see below) are possible.
         github("adonath/snakemake-workflow-chandra", path="workflow/Snakefile", branch="main")
-    config: config["fermi-lat-data"]
+    config: config["chandra-data"]
 
 use rule * from chandra_data_workflow as chandra_data_*
 ```
