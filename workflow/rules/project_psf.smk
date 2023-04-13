@@ -2,7 +2,6 @@ def get_simulate_psf_args(wildcards):
     config_psf = config_obj.irfs[wildcards.irf_label].psf
     config_psf.simulator = "file"
     args = config_psf.to_cmd_args()
-    print(args)
     return args
 
 def get_psf_path(wildcards):
@@ -20,7 +19,6 @@ def get_rayfile(wildcards):
 
 rule project_psf:
     input:
-<<<<<<< HEAD
         infile="results/{config_name}/{obs_id}/events/{config_name}-{obs_id}-events.fits",
         rayfile=get_rayfile
     output:
@@ -36,12 +34,3 @@ rule project_psf:
         "export MARX_ROOT=$CONDA_PREFIX;"
         "simulate_psf infile={input.infile} outroot={params.psf_path} rayfile={input.rayfile} spectrum=none {params.args};"
         "mv {params.psf_path}/*.psf {output}"
-=======
-        expand("results/{{config_name}}/{{obs_id}}/psf/{{irf_label}}/{simulator}/psf.psf", simulator=config_obj.psf_simulator)
-    output:
-        expand("results/{{config_name}}/maps/{{config_name}}-{{obs_id}}-{{irf_label}}-{simulator}-psf.fits", simulator=config_obj.psf_simulator)
-    log: 
-        "logs/{config_name}/{obs_id}/{config_name}-{obs_id}-{irf_label}-project-psf.log"
-    shell:
-        "cp {input} {output}"
->>>>>>> 0dca800 (Fix workflow)

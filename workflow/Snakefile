@@ -564,7 +564,7 @@ class ChandraConfig(BaseConfig):
 
 
 # setup config file
-config_obj = ChandraConfig.read("config/config.yaml")
+config_obj = ChandraConfig(**config)
 
 report: "report/workflow.rst"
 
@@ -580,7 +580,7 @@ include: "rules/compute_exposure.smk"
 include: "rules/extract_spectra.smk"
 include: "rules/fit_spectra.smk"
 include: "rules/simulate_psf.smk"
-#include: "rules/project_psf.smk"
+include: "rules/project_psf.smk"
 
 
 obs_ids = [f"{obs_id:05d}" for obs_id in config_obj.obs_ids]
