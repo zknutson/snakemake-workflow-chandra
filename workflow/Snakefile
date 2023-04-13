@@ -14,8 +14,6 @@ from astropy.coordinates import Angle, SkyCoord
 from astropy.time import Time
 from astropy.units import Quantity
 from astropy.wcs import WCS
-from gammapy.analysis.config import AngleType, EnergyType, FrameEnum
-from gammapy.utils.scripts import make_path, read_yaml
 from pydantic import BaseModel, validator
 from regions import CircleSkyRegion, RectangleSkyRegion
 
@@ -94,6 +92,34 @@ class PathType(Path):
     @classmethod
     def validate(cls, v):
         return Path(v)
+
+
+class AngleType(Angle):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        return Angle(v)
+
+
+class EnergyType(Quantity):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        v = Quantity(v)
+        if v.unit.physical_type != "energy":
+            raise ValueError(f"Invalid unit for energy: {v.unit!r}")
+        return v
+
+
+class FrameEnum(str, Enum):
+    icrs = "icrs"
+    galactic = "galactic"
 
 
 class BaseConfig(BaseModel):
@@ -495,7 +521,9 @@ class ChandraConfig(BaseConfig):
     @classmethod
     def read(cls, path):
         """Reads from YAML file."""
-        config = read_yaml(path)
+        with Path(path).open("r") as fh:
+            config = yaml.safe_load(fh)
+    
         return ChandraConfig(**config)
 
     @classmethod
@@ -506,7 +534,7 @@ class ChandraConfig(BaseConfig):
 
     def write(self, path, overwrite=False):
         """Write to YAML file."""
-        path = make_path(path)
+        path = Path(path)
 
         if path.exists() and not overwrite:
             raise IOError(f"File exists already: {path}")
