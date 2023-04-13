@@ -9,4 +9,5 @@ variables:
 dependencies:
   - python=3.9
   - astropy>=5.2
+  - regions>=0.5
   - numpy>=1.24
