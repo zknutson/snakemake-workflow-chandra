@@ -1,7 +1,6 @@
 def get_simulate_psf_args(wildcards):
     config_psf = config_obj.irfs[wildcards.irf_label].psf
     args = config_psf.to_cmd_args()
-    print(args)
     return args
 
 rule simulate_psf:
@@ -15,7 +14,8 @@ rule simulate_psf:
     conda:
         "../envs/ciao-4.15.yaml"
     params:
-        args = get_simulate_psf_args
+        args = get_simulate_psf_args,
+        outroot = lambda wildcards, output: output[0].replace("psf.psf", "")
     shell:
         "export MARX_ROOT=$CONDA_PREFIX;"
         "simulate_psf infile={input.infile} outroot={output} spectrum={input.spectrum} keepiter=yes {params.args}"

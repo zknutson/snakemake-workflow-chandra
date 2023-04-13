@@ -1,4 +1,3 @@
-from utils.io import wcs_from_header_chandra
 from astropy.io import fits
 import os 
 
