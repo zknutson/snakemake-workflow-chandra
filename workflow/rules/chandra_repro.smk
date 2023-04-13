@@ -6,7 +6,7 @@ rule chandra_repro:
     input:
         "data/{obs_id}"
     output:
-        "results/{config_name}/{obs_id}/repro/acisf{obs_id}_repro_evt2.fits"
+        touch("results/{config_name}/{obs_id}/repro/repro.done")
     log: 
         "logs/{config_name}/chandra-repro-{obs_id}.log"
     conda:
