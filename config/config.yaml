@@ -2,7 +2,8 @@ name: my-config
 path_data: data
 obs_ids:
 - 62558
-obs_id_ref: 62558
+- 1057
+obs_id_ref: 1057
 roi:
     center:
         frame: icrs
@@ -51,14 +52,14 @@ ciao:
         asol_update: true
         pi_filter: true
         cleanup: true
-        clobber: false
+        clobber: true
         verbose: 1
     reproject_events:
         aspect: null
         random: -1
         geompar: geom
         verbose: 0
-        clobber: false
+        clobber: true
     simulate_psf:
         monoenergy: null
         flux: null
@@ -110,7 +111,7 @@ ciao:
         parallel: true
         nproc: null
         tmpdir: ${ASCDS_WORK_PATH}
-        clobber: false
+        clobber: true
         verbose: 1
 saotrace:
     tag: foo
