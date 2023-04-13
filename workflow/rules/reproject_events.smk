@@ -1,6 +1,7 @@
 rule reproject_events:
     input:
-        "results/{config_name}/{obs_id}/repro/"
+        "results/{config_name}/{obs_id}/repro/acisf{obs_id}_repro_evt2.fits",
+        f"results/{{config_name}}/{config_obj.obs_id_ref:05d}/repro/acisf{config_obj.obs_id_ref:05d}_repro_evt2.fits"
     output:
         "results/{config_name}/{obs_id}/events/{config_name}-{obs_id}-events.fits"
     log: 
