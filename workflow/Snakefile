@@ -145,7 +145,7 @@ class CiaoBaseConfig(BaseConfig):
     """Ciao tools base config"""
 
     verbose: int = 1
-    clobber: bool = False
+    clobber: bool = True
 
     def to_cmd_args(self):
         """To cmd args"""
