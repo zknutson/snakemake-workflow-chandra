@@ -587,5 +587,6 @@ irf_labels = list(config_obj.irfs)
 # all rule 
 rule all:
     input:
-        expand("results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}", obs_id=config_obj.obs_ids, config_name=config_obj.name, irf_label=irf_labels, psf_simulator=config_obj.psf_simulator),
+        expand("results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}.psf", obs_id=config_obj.obs_ids, config_name=config_obj.name, irf_label=irf_labels, psf_simulator=config_obj.psf_simulator),
         expand("results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-exposure.fits", obs_id=config_obj.obs_ids, config_name=config_obj.name, irf_label=irf_labels),
+        
