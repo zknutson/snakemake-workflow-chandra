@@ -20,3 +20,4 @@ dependencies:
   - ciao-contrib
   - caldb_main
   - marx
+  - jupyter
