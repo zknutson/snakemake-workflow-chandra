@@ -18,4 +18,5 @@ rule simulate_psf:
         outroot = lambda wildcards, output: output[0].replace(".psf", "")
     shell:
         "export MARX_ROOT=$CONDA_PREFIX;"
+        "export MARX_DATA_DIR=${MARX_ROOT}/share/marx/data;"
         "simulate_psf infile={input.infile} outroot={params.outroot} spectrum={input.spectrum} keepiter=yes {params.args}"
