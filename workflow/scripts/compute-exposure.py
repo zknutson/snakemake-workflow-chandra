@@ -5,13 +5,13 @@ from astropy.io import fits
 from astropy.table import Table
 from astropy.wcs import WCS
 
-PATH = Path(__file__).parent.parent.parent / "data"
 
-
-def compute_exposure_simple(filename_counts, filename_exposure, obs_id, obs_id_ref):
+def compute_exposure_simple(
+    filename_counts, filename_exposure, filename_oif, filename_oif_ref
+):
     """Compute exposure simple"""
-    exposure_ref = Table.read(PATH / f"{obs_id_ref}" / "oif.fits").meta["EXPOSURE"]
-    value = Table.read(PATH / f"{obs_id}" / "oif.fits").meta["EXPOSURE"]
+    exposure_ref = Table.read(filename_oif_ref).meta["EXPOSURE"]
+    value = Table.read(filename_oif).meta["EXPOSURE"]
 
     header = fits.getheader(filename_counts)
 
@@ -25,8 +25,8 @@ def compute_exposure_simple(filename_counts, filename_exposure, obs_id, obs_id_r
 
 
 compute_exposure_simple(
-    filename_counts=snakemake.input[0],
-    filename_exposure=snakemake.output[0],
-    obs_id=snakemake.wildcards.obs_id,
-    obs_id_ref=snakemake.config["obs_id_ref"],
+    filename_counts=snakemake.input.filename_counts,
+    filename_exposure=snakemake.output.filename_exposure,
+    filename_oif=snakemake.input.filename_oif,
+    filename_oif_ref=snakemake.input.filename_oif_ref,
 )
