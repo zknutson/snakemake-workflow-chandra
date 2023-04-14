@@ -16,4 +16,5 @@ dependencies:
   - caldb_main
   - marx
   - jupyter
+  - astropy>=5.2
   
