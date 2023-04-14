@@ -227,17 +227,10 @@ class SimulatePSFConfig(CiaoBaseConfig):
     numrays: Optional[int] = None
     keepiter: bool = False
     asolfile: Optional[str] = None
-    marx_root: Optional[str] = None
+    marx_root: Optional[str] = ""
     ra: float = 0.0
     dec: float = 0.0
 
-    @validator("marx_root")
-    def validate_marx_root(value):
-        """Validate marx root"""
-        if value is None or value == "":
-            return MARX_ROOT
-        else:
-            return value
 
 class SpecExtractConfig(CiaoBaseConfig):
     bkgfile: Optional[str] = None
