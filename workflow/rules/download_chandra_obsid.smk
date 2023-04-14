@@ -1,6 +1,7 @@
 rule download_chandra_obsid:
     output:
-        directory("data/{obs_id}")
+        "data/{obs_id}/oif.fits",
+        touch("data/{obs_id}/download.done"),
     log: 
         "logs/download-chandra-obsid-{obs_id}.log"
     conda:

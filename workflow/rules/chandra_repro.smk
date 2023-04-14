@@ -4,7 +4,7 @@ def get_outdir(wildcards, output):
 
 rule chandra_repro:
     input:
-        "data/{obs_id}"
+        "data/{obs_id}/download.done",
     output:
         touch("results/{config_name}/{obs_id}/repro/repro.done")
     log: 
