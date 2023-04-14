@@ -15,7 +15,7 @@ rule simulate_psf:
         "../envs/ciao-4.15.yaml"
     params:
         args = get_simulate_psf_args,
-        outroot = lambda wildcards, output: output[0].replace("psf.psf", "")
+        outroot = lambda wildcards, output: output[0].replace(".psf", "")
     shell:
         "export MARX_ROOT=$CONDA_PREFIX;"
-        "simulate_psf infile={input.infile} outroot={output} spectrum={input.spectrum} keepiter=yes {params.args}"
+        "simulate_psf infile={input.infile} outroot={params.outroot} spectrum={input.spectrum} keepiter=yes {params.args}"
