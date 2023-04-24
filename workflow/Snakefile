@@ -15,7 +15,7 @@ from astropy.time import Time
 from astropy.units import Quantity
 from astropy.wcs import WCS
 from pydantic import BaseModel, validator
-from regions import CircleSkyRegion, RectangleSkyRegion
+from regions import CircleSkyRegion, RectangleSkyRegion, RectanglePixelRegion, PixCoord
 
 # set minimum snakemake version
 min_version("6.4.1")
@@ -416,6 +416,24 @@ class PerSourceSimulatePSFConfig(SimulatePSFConfig):
         kwargs["binsize"] = self.binsize
         kwargs["simulator"] = self.simulator
         return kwargs
+
+    def to_dm_copy_str(self, wcs):
+        """dmcopy argument"""
+        center = SkyCoord(self.ra, self.dec, unit="deg")
+        x, y = center.to_pixel(wcs=wcs)
+
+        bbox = RectanglePixelRegion(
+            center=PixCoord(x=x, y=y),
+            width=self.minszie,
+        ).bounding_box
+
+        spatial = (
+            f"bin x={bbox.ixmin}:{bbox.ixmax}:{self.binsize}, "
+            f"y={bbox.iymin}:{bbox.iymax}:{self.binsize}"
+        )
+
+        selection = f"[{spatial}]"
+        return selection
 
 
 class PerSourceSpecExtractConfig(SpecExtractConfig):

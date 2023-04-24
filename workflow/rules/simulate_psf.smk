@@ -8,7 +8,7 @@ rule simulate_psf:
         infile="results/{config_name}/{obs_id}/events/{config_name}-{obs_id}-events.fits",
         spectrum="results/{config_name}/spectral-fit/{irf_label}/{config_name}-{irf_label}-source-flux-chart.dat",
     output:
-        "results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}.psf"
+        "results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}_projrays.fits"
     log: 
         "logs/{config_name}/{obs_id}/{config_name}-{obs_id}-{irf_label}-{psf_simulator}-simulate-psf.log"
     conda:
