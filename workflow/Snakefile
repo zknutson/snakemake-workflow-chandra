@@ -424,7 +424,8 @@ class PerSourceSimulatePSFConfig(SimulatePSFConfig):
 
         bbox = RectanglePixelRegion(
             center=PixCoord(x=x, y=y),
-            width=self.minszie,
+            width=self.minsize,
+            height=self.minsize,
         ).bounding_box
 
         spatial = (
