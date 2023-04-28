@@ -434,7 +434,7 @@ class PerSourceSimulatePSFConfig(SimulatePSFConfig):
         )
 
         selection = f"[{spatial}]"
-        return selection
+        return selection + "[opt type=r4]"
 
 
 class PerSourceSpecExtractConfig(SpecExtractConfig):
