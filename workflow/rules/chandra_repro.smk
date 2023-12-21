@@ -10,7 +10,7 @@ rule chandra_repro:
     log: 
         "logs/{config_name}/chandra-repro-{obs_id}.log"
     conda:
-        "../envs/ciao-4.15.yaml"
+        "../envs/ciao-4.16.yaml"
     params:
         outdir = get_outdir
     shell:

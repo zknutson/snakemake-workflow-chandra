@@ -13,7 +13,7 @@ rule project_psf:
     log: 
         "logs/{config_name}/{obs_id}/{config_name}-{obs_id}-{irf_label}-{psf_simulator}-psf.log"
     conda:
-        "../envs/ciao-4.15.yaml"
+        "../envs/ciao-4.16.yaml"
     params:
         selection = dmcopy_selection_str_psf
     shell:

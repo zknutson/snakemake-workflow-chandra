@@ -29,7 +29,7 @@ rule reproject_events:
     log: 
         "logs/{config_name}/reproject-events-{obs_id}.log"
     conda:
-        "../envs/ciao-4.15.yaml"
+        "../envs/ciao-4.16.yaml"
     params:
         match = get_repro_event_file_match,
         infile = get_repro_event_file,
