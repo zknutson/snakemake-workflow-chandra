@@ -4,7 +4,6 @@ name: snakemake-workflow-chandra
 channels:
   - conda-forge
   - bioconda
-  - https://cxc.cfa.harvard.edu/conda/ciao
   
 variables:
   PYTHONNOUSERSITE: "1"
@@ -15,9 +14,4 @@ dependencies:
   - pydantic<2.0
   - astropy<6.0
   - regions>=0.5
-  - ciao=4.16
-  - sherpa=4.16
-  - ciao-contrib
-  - caldb_main
-  - marx
   - jupyter
