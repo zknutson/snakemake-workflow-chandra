@@ -26,12 +26,15 @@ rule extract_spectra:
         "results/{config_name}/{obs_id}/spectra/{irf_label}/{config_name}-{obs_id}-{irf_label}.rmf",
         "results/{config_name}/{obs_id}/spectra/{irf_label}/{config_name}-{obs_id}-{irf_label}_grp.pi",
     log: 
-        "logs/{config_name}/extract-spectra-{obs_id}-{irf_label}.log"
+        "logs/{config_name}/{obs_id}/spectra/{irf_label}/extract-spectra.log"
     conda:
         "../envs/ciao-4.16.yaml"
     params:
         selection = spec_extract_selection_str,
         selection_energy = spec_extract_selection_energy_str,
-        outroot = get_outroot
+        outroot = get_outroot,
+        parfolder = "logs/{config_name}/{obs_id}/spectra/{irf_label}/params",
     shell:
-        "specextract infile='{input}{params.selection}' outroot={params.outroot} energy={params.selection_energy}"
+        'mkdir -p {params.parfolder};'
+        'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
+        'specextract infile="{input}{params.selection}" outroot={params.outroot} energy={params.selection_energy}'

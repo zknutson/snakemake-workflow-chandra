@@ -10,12 +10,17 @@ rule bin_events:
     input:
         "results/{config_name}/{obs_id}/events/{config_name}-{obs_id}-events.fits"
     output:
-        "results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-counts.fits"
+        "results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-counts.fits",
     log: 
-        "logs/{config_name}/bin-events-{obs_id}.log"
+        "logs/{config_name}/{obs_id}/bin-events.log"
     conda:
         "../envs/ciao-4.16.yaml"
     params:
-        selection = dmcopy_selection_str
+        selection = dmcopy_selection_str,
+        parfolder = "logs/{config_name}/{obs_id}/params",
     shell:
-        "dmcopy '{input}{params.selection}' {output}"
+        'mkdir -p {params.parfolder};'
+        'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
+        'dmcopy "{input}{params.selection}" {output}'
+
+

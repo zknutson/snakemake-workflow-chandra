@@ -11,10 +11,13 @@ rule project_psf:
     output:
         "results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-{irf_label}-{psf_simulator}-psf.fits"
     log: 
-        "logs/{config_name}/{obs_id}/{config_name}-{obs_id}-{irf_label}-{psf_simulator}-psf.log"
+        "logs/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/project-psf.log"
     conda:
         "../envs/ciao-4.16.yaml"
     params:
-        selection = dmcopy_selection_str_psf
+        selection = dmcopy_selection_str_psf,
+        parfolder = "logs/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/params",
     shell:
-        "dmcopy '{input}{params.selection}' {output}"
+        'mkdir -p {params.parfolder};'
+        'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
+        'dmcopy "{input}{params.selection}" {output}'

@@ -11,12 +11,15 @@ rule simulate_psf:
         filename_psf="results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}.psf",
         filename_rays="results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}_projrays.fits",
     log: 
-        "logs/{config_name}/{obs_id}/{config_name}-{obs_id}-{irf_label}-{psf_simulator}-simulate-psf.log"
+        "logs/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/simulate-psf.log"
     conda:
         "../envs/ciao-4.16.yaml"
     params:
         args = get_simulate_psf_args,
-        outroot = lambda wildcards, output: output.filename_psf.replace(".psf", "")
+        parfolder = "logs/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/params",
+        outroot = lambda wildcards, output: output.filename_psf.replace(".psf", ""),
     shell:
-        "export MARX_ROOT=$CONDA_PREFIX;"
-        "simulate_psf infile={input.infile} outroot={params.outroot} spectrum={input.spectrum} {params.args}"
+        'mkdir -p {params.parfolder};'
+        'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
+        'export MARX_ROOT=$CONDA_PREFIX;'
+        'simulate_psf infile={input.infile} outroot={params.outroot} spectrum={input.spectrum} {params.args}'

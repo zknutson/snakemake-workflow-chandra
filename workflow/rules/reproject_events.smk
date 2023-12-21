@@ -27,11 +27,14 @@ rule reproject_events:
     output:
         "results/{config_name}/{obs_id}/events/{config_name}-{obs_id}-events.fits"
     log: 
-        "logs/{config_name}/reproject-events-{obs_id}.log"
+        "logs/{config_name}/{obs_id}/reproject-events.log"
     conda:
         "../envs/ciao-4.16.yaml"
     params:
         match = get_repro_event_file_match,
         infile = get_repro_event_file,
+        parfolder = "logs/{config_name}/{obs_id}/params",
     shell:
-        "reproject_events infile={params.infile} outfile={output} match={params.match}"
+        'mkdir -p {params.parfolder};'
+        'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
+        'reproject_events infile={params.infile} outfile={output} match={params.match}'

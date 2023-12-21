@@ -12,7 +12,7 @@ rule compute_exposure:
     output:
         filename_exposure="results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-exposure.fits"
     log: 
-        "logs/{config_name}/compute-exposure-{obs_id}.log"
+        "logs/{config_name}/{obs_id}/compute-exposure.log"
     conda:
         "../envs/default.yaml"
     script:

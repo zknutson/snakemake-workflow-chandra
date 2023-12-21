@@ -6,12 +6,15 @@ rule chandra_repro:
     input:
         "data/{obs_id}/download.done",
     output:
-        touch("results/{config_name}/{obs_id}/repro/repro.done")
+        touch("results/{config_name}/{obs_id}/repro/repro.done"),
     log: 
-        "logs/{config_name}/chandra-repro-{obs_id}.log"
+        "logs/{config_name}/{obs_id}/chandra-repro.log"
     conda:
         "../envs/ciao-4.16.yaml"
     params:
-        outdir = get_outdir
+        outdir = get_outdir,
+        parfolder = "logs/{config_name}/{obs_id}/params",
     shell:
-        "chandra_repro indir=data/{wildcards.obs_id} outdir={params.outdir}"
+        'mkdir -p {params.parfolder};'
+        'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
+        'chandra_repro indir=data/{wildcards.obs_id} outdir={params.outdir}'
