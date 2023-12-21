@@ -48,4 +48,4 @@ jobs:
     - name: Run tests
       shell: bash -l {0}
       run: |
-        MARX_ROOT=/usr/share/miniconda3/envs/snakemake-chandra-workflow; snakemake -c2
+        snakemake -c2 --use-conda
