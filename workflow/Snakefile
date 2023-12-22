@@ -207,7 +207,7 @@ class ChandraReproConfig(CiaoBaseConfig):
 
 
 class ReprojectEventsConfig(CiaoBaseConfig):
-    aspect: Optional[str] = ""
+    aspect: Optional[str] = "none"
     random: int = -1
     geompar: str = "geom"
 
@@ -216,7 +216,7 @@ class SimulatePSFConfig(CiaoBaseConfig):
     monoenergy: float = None
     flux: float = None
     simulator: PSFSimulatorEnum = "marx"
-    rayfile: Optional[str] = ""
+    rayfile: Optional[str] = "none"
     projector: str = "marx"
     random_seed: int = -1
     blur: float = 0.25
