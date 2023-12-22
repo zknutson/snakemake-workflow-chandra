@@ -55,7 +55,7 @@ ciao:
         clobber: true
         verbose: 1
     reproject_events:
-        aspect: null
+        aspect: "none"
         random: -1
         geompar: geom
         verbose: 0
