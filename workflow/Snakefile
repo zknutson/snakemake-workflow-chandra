@@ -172,6 +172,10 @@ class PixAdjEnum(str, Enum):
     edser = "edser"
     default = "default"
 
+class ZoPositionEnum(str, Enum):
+    evt2 = "evt2"
+    detect = "detect"
+
 
 class PSFSimulatorEnum(str, Enum):
     marx = "marx"
@@ -190,13 +194,13 @@ class DMCopyConfig(CiaoBaseConfig):
 
 
 class ChandraReproConfig(CiaoBaseConfig):
-    root: Optional[str] = ""
     badpixel: bool = True
     process_events: bool = True
     destreak: bool = True
     set_ardlib: bool = True
     check_vf_pha: bool = False
     pix_adj: PixAdjEnum = "default"
+    tg_zo_position: ZoPositionEnum = "evt2"
     asol_update: bool = True
     pi_filter: bool = True
     cleanup: bool = True

@@ -34,7 +34,8 @@ rule reproject_events:
         match = get_repro_event_file_match,
         infile = get_repro_event_file,
         parfolder = "logs/{config_name}/{obs_id}/params",
+        args = config_obj.ciao.reproject_events.to_cmd_args(),
     shell:
         'mkdir -p {params.parfolder};'
         'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
-        'reproject_events infile={params.infile} outfile={output} match={params.match}'
+        'reproject_events infile={params.infile} outfile={output} match={params.match} {params.args}'

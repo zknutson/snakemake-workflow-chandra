@@ -42,13 +42,13 @@ ciao:
         verbose: 0
         clobber: false
     chandra_repro:
-        root: null
         badpixel: true
         process_events: true
         destreak: true
         set_ardlib: true
         check_vf_pha: false
         pix_adj: default
+        tg_zo_position: evt2
         asol_update: true
         pi_filter: true
         cleanup: true

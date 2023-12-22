@@ -14,7 +14,8 @@ rule chandra_repro:
     params:
         outdir = get_outdir,
         parfolder = "logs/{config_name}/{obs_id}/params",
+        args = config_obj.ciao.chandra_repro.to_cmd_args(),
     shell:
         'mkdir -p {params.parfolder};'
         'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
-        'chandra_repro indir=data/{wildcards.obs_id} outdir={params.outdir}'
+        'chandra_repro indir=data/{wildcards.obs_id} outdir={params.outdir} {params.args}'
