@@ -7,6 +7,10 @@ def spec_extract_selection_str(wildcards, input):
     config_spec = config_obj.irfs[wildcards.irf_label].spectrum
     return config_spec.to_region_str(wcs=wcs)
 
+def spec_extract_bkg_selection_str(wildcards, input):
+    config_spec = config_obj.irfs[wildcards.irf_label].spectrum
+    return config_spec.to_background_str()
+
 def spec_extract_selection_energy_str(wildcards, input):
     config_spec = config_obj.irfs[wildcards.irf_label].spectrum
     return config_spec.to_energy_str()
@@ -34,7 +38,8 @@ rule extract_spectra:
         selection_energy = spec_extract_selection_energy_str,
         outroot = get_outroot,
         parfolder = "logs/{config_name}/{obs_id}/spectra/{irf_label}/params",
+        bkg_selection = spec_extract_bkg_selection_str,
     shell:
         'mkdir -p {params.parfolder};'
         'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
-        'specextract infile="{input}{params.selection}" outroot={params.outroot} energy={params.selection_energy}'
+        'specextract infile="{input}{params.selection}" outroot={params.outroot} energy={params.selection_energy} bkgresp=yes bkgfile="{input}{params.bkg_selection}"'
