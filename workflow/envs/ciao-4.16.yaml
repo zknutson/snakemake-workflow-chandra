@@ -8,8 +8,9 @@ variables:
   PYTHONNOUSERSITE: "1"
 
 dependencies:
-  - python=3.9
+  - python=3.11
   - ciao=4.16
+  - pyciao
   - sherpa=4.16
   - ciao-contrib
   - caldb_main
