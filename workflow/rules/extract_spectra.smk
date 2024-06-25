@@ -42,4 +42,4 @@ rule extract_spectra:
     shell:
         'mkdir -p {params.parfolder};'
         'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
-        'specextract infile="{input}{params.selection}" outroot={params.outroot} energy={params.selection_energy} bkgresp=yes bkgfile="{input}{params.bkg_selection}"'
+        'specextract infile="{input}{params.selection}" outroot={params.outroot} energy={params.selection_energy} bkgresp=yes bkgfile="{input}{params.bkg_selection} clobber=yes"'
