@@ -409,6 +409,9 @@ class PerSourceSimulatePSFConfig(SimulatePSFConfig):
             "minsize": {"include": True},
             "numiter": {"include": True},
             "blur": {"include": True},
+            "numrays": {"include": True},
+            "numsig": {"include": True},
+            "flux": {"include": True},
         }
 
     def dict(self):
