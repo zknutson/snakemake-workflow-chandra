@@ -159,7 +159,7 @@ class CiaoBaseConfig(BaseConfig):
             if value is False:
                 data[key] = "no"
 
-            if values is None:
+            if value is None:
                 data[key] = "INDEF"
 
         return " ".join([f"{key}={value}" for key, value in data.items()])
