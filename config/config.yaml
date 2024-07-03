@@ -28,6 +28,7 @@ irfs:
                 max: 7.0 keV
             energy_groups: 5
             energy_step: 0.01
+            background_region_file: bkg_region.reg
         psf:
             blur: 0.07
             readout_streak: false
