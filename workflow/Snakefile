@@ -454,7 +454,7 @@ class PerSourceSpecExtractConfig(SpecExtractConfig):
     energy_range: EnergyRangeConfig = EnergyRangeConfig()
     energy_groups: int = 5
     energy_step: float = 0.01
-    background_region_file: Path = None
+    background_region_file: Optional[Path] = None 
 
     class Config:
         fields = {
@@ -598,9 +598,9 @@ include: "rules/download_chandra_obsid.smk"
 include: "rules/chandra_repro.smk"
 include: "rules/reproject_events.smk"
 include: "rules/bin_events.smk"
-include: "rules/compute_exposure.smk"
 include: "rules/extract_spectra.smk"
 include: "rules/fit_spectra.smk"
+include: "rules/compute_exposure_flux.smk"
 include: "rules/simulate_psf.smk"
 include: "rules/project_psf.smk"
 
