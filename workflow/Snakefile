@@ -5,7 +5,7 @@ import logging
 import os
 from enum import Enum
 from pathlib import Path
-from typing import ClassVar, Dict, List, Optional
+from typing import ClassVar, Dict, List, Optional, Union
 
 import numpy as np
 import yaml
@@ -204,7 +204,7 @@ class ChandraReproConfig(CiaoBaseConfig):
     set_ardlib: bool = True
     check_vf_pha: bool = False
     pix_adj: PixAdjEnum = "default"
-    tg_zo_position: ZoPositionEnum = "evt2"
+    tg_zo_position: Union[ZoPositionEnum, str] = "evt2"
     asol_update: bool = True
     pi_filter: bool = True
     cleanup: bool = True
