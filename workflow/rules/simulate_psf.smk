@@ -1,5 +1,6 @@
 
 def get_simulate_psf_args(wildcards):
+    from astropy.table import Table
     config_psf = config_obj.irfs[wildcards.irf_label].psf
     
     # This is a workaround for the HETG grating, see https://github.com/cxcsds/ciao-contrib/issues/882 
