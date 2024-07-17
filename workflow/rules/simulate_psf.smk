@@ -30,7 +30,7 @@ rule simulate_psf:
     conda:
         "../envs/ciao-4.16.yaml"
     params:
-        args = get_simulate_psf_args,
+        args = lambda wildcards: get_simulate_psf_args(wildcards),
         parfolder = "logs/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/params",
         outroot = lambda wildcards, output: output.filename_psf.replace(".psf", ""),
     shell:
