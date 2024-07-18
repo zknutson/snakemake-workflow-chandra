@@ -23,4 +23,4 @@ rule compute_exposure_flux:
         'mkdir -p {params.parfolder};'
         'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
         "fluximage {input.filename_events} {output.path} xygrid={input.filename_counts} bands={input.filename_spectrum} clobber=yes mode=h;"
-        "cp {output.path}/flux_.expmap {output.filename_exposure};"
+        "cp {output.path}/flux_band1_thresh.expmap {output.filename_exposure};"
