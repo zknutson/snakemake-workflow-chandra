@@ -6,7 +6,7 @@ def get_outdir(wildcards, output):
 rule compute_exposure_flux:
     input:
         filename_events="results/{config_name}/{obs_id}/events/{config_name}-{obs_id}-events.fits",
-        filename_spectrum=expand("results/{{config_name}}/spectral-fit/{irf_label_ref}/{{config_name}}-{irf_label_ref}-source-flux-chart.dat", irf_label_ref=list(config_obj.irfs)[0]),
+        filename_spectrum=expand("results/{{config_name}}/spectral-fit/{irf_label_ref}/{{config_name}}-{irf_label_ref}-source-flux-weights.csv", irf_label_ref=list(config_obj.irfs)[0]),
         filename_counts="results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-counts.fits",
     output:
         filename_done=touch("results/{config_name}/{obs_id}/flux/flux.done"),

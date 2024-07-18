@@ -411,6 +411,7 @@ class PerSourceSimulatePSFConfig(SimulatePSFConfig):
             "readout_streak": {"include": True},
             "extended": {"include": True},
             "minsize": {"include": True},
+            "maxsize": {"include": True},
             "numiter": {"include": True},
             "blur": {"include": True},
             "numrays": {"include": True},
@@ -601,6 +602,7 @@ include: "rules/reproject_events.smk"
 include: "rules/bin_events.smk"
 include: "rules/extract_spectra.smk"
 include: "rules/fit_spectra.smk"
+include: "rules/compute_spectral_weights.smk"
 include: "rules/compute_exposure_flux.smk"
 include: "rules/simulate_psf.smk"
 include: "rules/project_psf.smk"

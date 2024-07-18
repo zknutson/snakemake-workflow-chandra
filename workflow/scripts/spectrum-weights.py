@@ -5,11 +5,15 @@ from astropy.table import Table
 
 if __name__ == "__main__":
     filename = Path(sys.argv[1])
-    table = Table.read(filename, format="ascii.csv")
-    print(table)
-    1 / 0
+    table = Table.read(
+        filename,
+        format="ascii.commented_header",
+        delimiter=" ",
+        guess=False,
+        header_start=1,
+    )
 
-    table["weights"] = table["flux"] / table["flux"].sum()
+    table["spectrum"] = table["spectrum"] / table["spectrum"].sum()
 
-    filename = filename.with_suffix("-weights.csv")
-    table.write(filename, format="ascii.csv")
+    filename = filename.parent / filename.name.replace("chart.dat", "weights.csv")
+    table.write(filename, format="ascii.no_header")
