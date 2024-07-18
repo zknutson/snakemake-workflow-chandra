@@ -1,2 +1,2 @@
 # Raw data folder
-This folder should contain the raw data downloaded from https://fermi.gsfc.nasa.gov/cgi-bin/ssc/LAT/LATDataQuery.cgi
+This folder should contain the raw data downloaded by `download_chandra_obsid`.
