@@ -1,8 +1,6 @@
-
-# def get_repro_event_file(wildcards):
-#     """Get the event file"""
-#     obs_id = int(wildcards.obs_id)
-#     return  f"results/{wildcards.config_name}/{obs_id}/repro/acisf{obs_id:05d}_repro_evt2.fits"
+def get_outdir(wildcards, output):
+    """Get the output directory from the output file name."""
+    return str(Path(output.filename_done).parent)
 
 
 rule compute_exposure_flux:
@@ -11,16 +9,17 @@ rule compute_exposure_flux:
         filename_spectrum=expand("results/{{config_name}}/spectral-fit/{irf_label_ref}/{{config_name}}-{irf_label_ref}-source-flux-chart.dat", irf_label_ref=list(config_obj.irfs)[0]),
         filename_counts="results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-counts.fits",
     output:
-        path="results/{config_name}/{obs_id}/maps/flux/",
+        filename_done=touch("results/{config_name}/{obs_id}/flux/flux.done"),
         filename_exposure="results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-exposure.fits",
     log: 
         "logs/{config_name}/{obs_id}/compute-exposure-flux.log"
     conda:
         "../envs/ciao-4.16.yaml"
     params:
+        outdir = get_outdir,
         parfolder = "logs/{config_name}/{obs_id}/params",
     shell:
         'mkdir -p {params.parfolder};'
         'PFILES="{params.parfolder};$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";'
-        "fluximage {input.filename_events} {output.path} xygrid={input.filename_counts} bands={input.filename_spectrum} clobber=yes mode=h;"
-        "cp {output.path}/flux_band1_thresh.expmap {output.filename_exposure};"
+        "fluximage {input.filename_events} {params.outdir}/flux xygrid={input.filename_counts} bands={input.filename_spectrum} clobber=yes mode=h;"
+        "cp {params.outdir}/flux_band1_thresh.expmap {output.filename_exposure};"
