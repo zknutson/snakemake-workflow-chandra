@@ -231,6 +231,7 @@ class SimulatePSFConfig(CiaoBaseConfig):
     binsize: float = 1.0
     numsig: float = 7.0
     minsize: Optional[int] = None
+    maxsize: Optional[int] = None
     numiter: int = 1
     numrays: Optional[int] = None
     keepiter: bool = False

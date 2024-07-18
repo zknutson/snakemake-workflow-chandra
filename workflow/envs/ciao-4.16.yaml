@@ -12,8 +12,10 @@ dependencies:
   - ciao=4.16
   - pyciao
   - sherpa=4.16
-  - ciao-contrib
   - caldb_main
   - marx
   - jupyter
   - astropy>=5.2
+  - pip
+  - pip:
+      - git+https://github.com/kglotfelty/ciao-contrib@simpsf_maxsize
