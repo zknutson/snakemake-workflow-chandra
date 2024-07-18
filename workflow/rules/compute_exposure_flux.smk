@@ -11,7 +11,7 @@ rule compute_exposure_flux:
         filename_spectrum=expand("results/{{config_name}}/spectral-fit/{irf_label_ref}/{{config_name}}-{irf_label_ref}-source-flux-chart.dat", irf_label_ref=list(config_obj.irfs)[0]),
         filename_counts="results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-counts.fits",
     output:
-        path="results/{config_name}/{obs_id}/maps/flux",
+        path="results/{config_name}/{obs_id}/maps/flux/",
         filename_exposure="results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-exposure.fits",
     log: 
         "logs/{config_name}/{obs_id}/compute-exposure-flux.log"

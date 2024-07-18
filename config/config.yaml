@@ -1,7 +1,7 @@
 name: my-config
 path_data: data
 obs_ids:
-- 62558
+- 62549
 - 1057
 obs_id_ref: 1057
 roi:
