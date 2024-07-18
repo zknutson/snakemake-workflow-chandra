@@ -1,34 +1,8 @@
 
-def get_grating(obs_id):
-    """Get grating"""
-    import tempfile
-    from ciao_contrib.runtool import find_chandra_obsid
-    from astropy.table import QTable
-
-    with tempfile.NamedTemporaryFile() as tf:
-        with open(tf.name, 'w') as f:
-            f.write(find_chandra_obsid(obs_id))
-
-        table = QTable.read(tf.name, format='ascii')
-
-    return table["grat"][0]
-
 
 def get_simulate_psf_args(wildcards):
     config_psf = config_obj.irfs[wildcards.irf_label].psf
-    
-    # This is a workaround for the HETG grating, see https://github.com/cxcsds/ciao-contrib/issues/882 
-    grating = get_grating(wildcards.obs_id)
-
-    numsig_current = config_psf.numsig
-    
-    if grating == "HETG":
-        config_psf.numsig = 1.
-
     args = config_psf.to_cmd_args()
-
-    config_psf.numsig = numsig_current
-
     return args
 
 rule simulate_psf:
