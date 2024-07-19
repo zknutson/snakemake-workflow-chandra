@@ -527,6 +527,7 @@ class ChandraConfig(BaseConfig):
     path_data: PathType = Path("./data")
     obs_ids: List[int] = [62558]
     obs_id_ref: int = 62558
+    background_region_file: Optional[Path] = None 
     roi: ROIConfig = ROIConfig()
     psf_simulator: PSFSimulatorEnum = PSFSimulatorEnum.marx
     irfs: Dict[str, IRFConfig] = {"pks-0637": IRFConfig()}
@@ -538,6 +539,7 @@ class ChandraConfig(BaseConfig):
 
         for config in self.irfs.values():
             config.psf.binsize = self.roi.bin_size
+            config.spectrum.background_region_file = self.background_region_file
 
             if self.psf_simulator == PSFSimulatorEnum.saotrace:
                 config.psf.simulator = "file"
@@ -600,6 +602,7 @@ include: "rules/download_chandra_obsid.smk"
 include: "rules/chandra_repro.smk"
 include: "rules/reproject_events.smk"
 include: "rules/bin_events.smk"
+include: "rules/compute_background_simple.smk"
 include: "rules/extract_spectra.smk"
 include: "rules/fit_spectra.smk"
 include: "rules/compute_spectral_weights.smk"
@@ -615,4 +618,4 @@ rule all:
         expand("results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-{irf_label}-{psf_simulator}-psf.fits", obs_id=config_obj.obs_ids, config_name=config_obj.name, irf_label=irf_labels, psf_simulator=config_obj.psf_simulator),
         expand("results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-exposure.fits", obs_id=config_obj.obs_ids, config_name=config_obj.name, irf_label=irf_labels),
         expand("results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-counts.fits", obs_id=config_obj.obs_ids, config_name=config_obj.name, irf_label=irf_labels),
-        
+        expand("results/{config_name}/{obs_id}/maps/{config_name}-{obs_id}-background.fits", obs_id=config_obj.obs_ids, config_name=config_obj.name, irf_label=irf_labels),

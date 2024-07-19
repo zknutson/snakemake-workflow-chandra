@@ -4,6 +4,7 @@ obs_ids:
 - 62549
 - 1057
 obs_id_ref: 1057
+background_region_file: bkg_region.reg
 roi:
     center:
         frame: icrs
