@@ -4,7 +4,7 @@ from pathlib import Path
 from astropy.table import Table
 
 if __name__ == "__main__":
-    filename = Path(sys.argv[1])
+    filename = Path(str(snakemake.input.filename_spectrum))
     table = Table.read(
         filename,
         format="ascii.commented_header",
