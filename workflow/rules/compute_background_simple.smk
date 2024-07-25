@@ -29,7 +29,7 @@ rule compute_background_simple:
 
         inside = region_union.contains(coords)
 
-        bkg_level = np.ones(counts.shape) * inside.sum() / region_union.area
+        bkg_level = np.ones(counts.shape) * inside.sum() / region_union.area / config["roi"]["bin_size"] ** 2
 
         background_hdu = fits.PrimaryHDU(data=bkg_level, header=header_counts)
 
