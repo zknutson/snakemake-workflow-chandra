@@ -7,7 +7,7 @@ def dmcopy_selection_str_psf(wildcards, input):
 
 rule project_psf:
     input:
-        "results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}_psf_image.fits"
+        "results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}_projrays.fits"
     output:
         "results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}_psf_image.fits"
     log: 

@@ -608,6 +608,7 @@ include: "rules/fit_spectra.smk"
 include: "rules/compute_spectral_weights.smk"
 include: "rules/compute_exposure_flux.smk"
 include: "rules/simulate_psf.smk"
+include: "rules/post_process_psf.smk"
 include: "rules/project_psf.smk"
 
 irf_labels = list(config_obj.irfs)
