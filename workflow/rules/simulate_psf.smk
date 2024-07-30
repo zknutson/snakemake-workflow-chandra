@@ -17,6 +17,7 @@ rule simulate_psf:
     input:
         infile="results/{config_name}/{obs_id}/events/{config_name}-{obs_id}-events.fits",
         spectrum="results/{config_name}/spectral-fit/{irf_label}/{config_name}-{irf_label}-source-flux-chart.dat",
+        repro_done="results/{config_name}/{obs_id}/repro/repro.done",
     output:
         filename_psf="results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}.psf",
         filename_rays="results/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/{psf_simulator}_projrays.fits",
