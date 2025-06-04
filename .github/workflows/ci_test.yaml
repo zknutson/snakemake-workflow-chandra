@@ -24,16 +24,14 @@ jobs:
       CACHE_NUMBER: 0
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - name: Setup mambaforge
+    - name: Setup miniconda
       uses: conda-incubator/setup-miniconda@v3
       with:
-        miniforge-variant: Mambaforge
-        miniforge-version: latest
+        mamba-version: "*"
         activate-environment: snakemake-workflow-chandra
-        use-mamba: true
     - name: Cache conda environment
       uses: actions/cache@v4
       with:
