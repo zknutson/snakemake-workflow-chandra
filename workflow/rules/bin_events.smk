@@ -14,7 +14,7 @@ rule bin_events:
     log: 
         "logs/{config_name}/{obs_id}/bin-events.log"
     conda:
-        "../envs/ciao-4.16.yaml"
+        "../envs/ciao-4.17.yaml"
     params:
         selection = dmcopy_selection_str,
         parfolder = "logs/{config_name}/{obs_id}/params",

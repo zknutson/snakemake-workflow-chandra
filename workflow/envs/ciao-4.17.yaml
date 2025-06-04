@@ -1,4 +1,4 @@
-name: ciao-4.16
+name: ciao-4.17
 
 channels:
   - conda-forge
@@ -9,13 +9,12 @@ variables:
 
 dependencies:
   - python=3.11
-  - ciao=4.16
+  - ciao=4.17
   - pyciao
-  - sherpa=4.16
+  - sherpa=4.17
   - caldb_main
   - marx
   - jupyter
   - astropy>=5.2
   - pip
-  - pip:
-      - git+https://github.com/kglotfelty/ciao-contrib@simpsf_maxsize
+

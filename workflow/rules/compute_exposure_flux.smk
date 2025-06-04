@@ -14,7 +14,7 @@ rule compute_exposure_flux:
     log: 
         "logs/{config_name}/{obs_id}/compute-exposure-flux.log"
     conda:
-        "../envs/ciao-4.16.yaml"
+        "../envs/ciao-4.17.yaml"
     params:
         outdir = get_outdir,
         parfolder = "logs/{config_name}/{obs_id}/params",

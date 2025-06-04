@@ -8,6 +8,6 @@ rule fit_spectra:
         notebook="results/{config_name}/spectral-fit/{irf_label}/{config_name}-{irf_label}-spectral-fit.ipynb"
     localrule: True
     conda:
-        "../envs/ciao-4.16.yaml"
+        "../envs/ciao-4.17.yaml"
     notebook:
         "../notebooks/fit-spectra.ipynb"

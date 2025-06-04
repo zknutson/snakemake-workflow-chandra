@@ -14,7 +14,7 @@ rule simulate_psf:
     log: 
         "logs/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/simulate-psf.log"
     conda:
-        "../envs/ciao-4.16.yaml"
+        "../envs/ciao-4.17.yaml"
     params:
         args = lambda wildcards: get_simulate_psf_args(wildcards),
         parfolder = "logs/{config_name}/{obs_id}/psf/{irf_label}/{psf_simulator}/params",

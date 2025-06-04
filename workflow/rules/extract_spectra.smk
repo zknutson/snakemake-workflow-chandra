@@ -32,7 +32,7 @@ rule extract_spectra:
     log: 
         "logs/{config_name}/{obs_id}/spectra/{irf_label}/extract-spectra.log"
     conda:
-        "../envs/ciao-4.16.yaml"
+        "../envs/ciao-4.17.yaml"
     params:
         selection = spec_extract_selection_str,
         selection_energy = spec_extract_selection_energy_str,
