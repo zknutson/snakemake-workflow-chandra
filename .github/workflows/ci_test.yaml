@@ -30,8 +30,6 @@ jobs:
     - name: Setup miniconda
       uses: conda-incubator/setup-miniconda@v3
       with:
-        mamba-version: "*"
-        channels: conda-forge,defaults
         activate-environment: snakemake-workflow-chandra
     - name: Cache conda environment
       uses: actions/cache@v4
@@ -42,9 +40,9 @@ jobs:
       id: cache
     - name: Update environment
       run:
-        mamba env update -f environment.yaml
+        conda env update -f environment.yaml
       if: steps.cache.outputs.cache-hit != 'true'
     - name: Run tests
       shell: bash -l {0}
       run: |
-        snakemake -c2 --use-conda
+        snakemake -c2 --use-conda --conda-frontend conda
