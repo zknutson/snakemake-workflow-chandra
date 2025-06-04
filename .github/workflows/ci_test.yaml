@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MARX_ROOT: /usr/share/miniconda3/envs/snakemake-workflow-chandra
-      CACHE_NUMBER: 0
+      CACHE_NUMBER: 1
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
