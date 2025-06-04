@@ -35,7 +35,7 @@ jobs:
         activate-environment: snakemake-workflow-chandra
         use-mamba: true
     - name: Cache conda environment
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ env.CONDA }}/envs
         key:
