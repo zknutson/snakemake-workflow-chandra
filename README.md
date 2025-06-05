@@ -54,7 +54,7 @@ to match your data.
 
 Then you are ready to run the workflow, like:
 ```bash
-snakemake --cores 8
+snakemake --cores 8 --use-conda --configfile config/config.yaml
 ```
 
 You can also create a report to see previews of the counts, exposure and PSF images:
