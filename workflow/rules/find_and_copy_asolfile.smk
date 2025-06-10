@@ -7,9 +7,16 @@ rule find_and_copy_asolfile:
         from pathlib import Path
         import shutil
 
-        filename = Path(f"results/{wildcards.config_name}/{wildcards.obs_id}/repro/acisf{int(wildcards.obs_id):05d}_asol1.lis")
+        path =  Path(f"results/{wildcards.config_name}/{wildcards.obs_id}/repro/")
 
-        with open(filename, "r") as f:
+        instrument = config_obj.obs_info_table.loc[wildcards.obs_id]["INSTR"]
+
+        if "ACIS" in instrument:
+            filename = f"acisf{int(wildcards.obs_id):05d}_asol1.lis"
+        else:
+            filename =  f"hrcf{int(wildcards.obs_id):05d}_asol1.lis"
+
+        with (path / filename).open("r") as f:
             asolfile = f.readline().strip()
 
         shutil.copy(asolfile, output.filename_asol)

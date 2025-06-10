@@ -123,7 +123,6 @@ class CiaoBaseConfig(BaseConfig):
     """Ciao tools base config"""
 
     verbose: int = 1
-    clobber: bool = True
 
     def to_cmd_args(self):
         """To cmd args"""
@@ -172,6 +171,7 @@ class GroupTypeEnum(str, Enum):
 class DMCopyConfig(CiaoBaseConfig):
     kernel: str = "default"
     option: Optional[DmCopyOptionEnum] = "none"
+    clobber: bool = True
 
 
 class ChandraReproConfig(CiaoBaseConfig):
@@ -185,9 +185,11 @@ class ChandraReproConfig(CiaoBaseConfig):
     asol_update: bool = True
     pi_filter: bool = True
     cleanup: bool = True
+    clobber: bool = True
 
 
 class ReprojectEventsConfig(CiaoBaseConfig):
+    clobber: bool = True
     aspect: Optional[str] = "none"
     random: int = -1
     geompar: str = "geom"
@@ -246,6 +248,7 @@ class SpecExtractConfig(CiaoBaseConfig):
     parallel: bool = False
     nproc: Optional[int] = None
     tmpdir: str = "${ASCDS_WORK_PATH}"
+    clobber: bool = True
 
 
 class CiaoToolsConfig(BaseConfig):

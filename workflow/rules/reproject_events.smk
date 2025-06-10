@@ -1,6 +1,15 @@
 def get_repro_event_file_match(wildcards):
     """Get the event file to match to"""
-    return  f"results/{wildcards.config_name}/{config_obj.obs_id_ref}/repro/acisf{config_obj.obs_id_ref:05d}_repro_evt2.fits"
+    path = Path(f"results/{wildcards.config_name}/{config_obj.obs_id_ref}/repro/")
+
+    instrument = config_obj.obs_info_table.loc[wildcards.obs_id]["INSTR"]
+
+    if "ACIS" in instrument:
+        filename =  f"acisf{config_obj.obs_id_ref:05d}_repro_evt2.fits"
+    else:
+        filename = f"hrcf{config_obj.obs_id_ref:05d}_repro_evt2.fits"
+
+    return str(path / filename)
 
 
 def get_repro_match_done(wildcards):
@@ -11,7 +20,16 @@ def get_repro_match_done(wildcards):
 def get_repro_event_file(wildcards):
     """Get the event file"""
     obs_id = int(wildcards.obs_id)
-    return  f"results/{wildcards.config_name}/{obs_id}/repro/acisf{obs_id:05d}_repro_evt2.fits"
+    path = Path(f"results/{wildcards.config_name}/{obs_id}/repro/")
+
+    instrument = config_obj.obs_info_table.loc[wildcards.obs_id]["INSTR"]
+
+    if "ACIS" in instrument:
+        filename =  f"acisf{obs_id:05d}_repro_evt2.fits"
+    else:
+        filename = f"hrcf{obs_id:05d}_repro_evt2.fits"
+    
+    return str(path / filename)
 
 
 def get_repro_done(wildcards):

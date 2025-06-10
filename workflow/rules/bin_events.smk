@@ -3,7 +3,9 @@ from astropy.io import fits
 def dmcopy_selection_str(wildcards, input):
     header = fits.getheader(input[0], "EVENTS")
     wcs = wcs_from_header_chandra(header)
-    return config_obj.roi.to_dm_copy_str(wcs=wcs)
+
+    include_energy = "ACIS" in header["INSTRUME"]
+    return config_obj.roi.to_dm_copy_str(wcs=wcs, include_energy=include_energy)
 
 
 rule bin_events:
