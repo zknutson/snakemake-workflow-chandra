@@ -18,8 +18,9 @@ from astropy.time import Time
 from astropy.units import Quantity
 from astropy.table import Table
 from astropy.wcs import WCS
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, computed_field
 from regions import CircleSkyRegion, RectangleSkyRegion, RectanglePixelRegion, PixCoord
+from gammapy.utils.types import EnergyType, AngleType, PathType
 
 # set minimum snakemake version
 min_version("6.4.1")
@@ -97,39 +98,6 @@ def wcs_from_header_chandra(header, x_col=None):
     return wcs
 
 
-class PathType(Path):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        return Path(v)
-
-
-class AngleType(Angle):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        return Angle(v)
-
-
-class EnergyType(Quantity):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        v = Quantity(v)
-        if v.unit.physical_type != "energy":
-            raise ValueError(f"Invalid unit for energy: {v.unit!r}")
-        return v
-
-
 class FrameEnum(str, Enum):
     icrs = "icrs"
     galactic = "galactic"
@@ -140,14 +108,10 @@ class BaseConfig(BaseModel):
 
     class Config:
         use_enum_values = True
-        validate_all = True
+        validate_default = True
         validate_assignment = True
         extra = "forbid"
-        json_encoders = {
-            Angle: lambda v: v.to_string(),
-            Quantity: lambda v: f"{v.value} {v.unit}",
-            Time: lambda v: f"{v.value}",
-        }
+        arbitrary_types_allowed=True
 
 
 def to_ciao_name(name):
@@ -230,8 +194,8 @@ class ReprojectEventsConfig(CiaoBaseConfig):
 
 
 class SimulatePSFConfig(CiaoBaseConfig):
-    monoenergy: float = None
-    flux: float = None
+    monoenergy: Optional[float] = None
+    flux: Optional[float] = None
     simulator: PSFSimulatorEnum = "marx"
     rayfile: Optional[str] = "none"
     projector: str = "marx"
@@ -357,7 +321,7 @@ class SAOTraceConfig(BaseConfig):
     srcpars: str = "src.lua"
     shells: str = "all"
     tstart: float = 0
-    limit = 0.01
+    limit: float = 0.01
     z: float = 10079.774
     src: str = "default"
     output: str = "default"
@@ -560,6 +524,7 @@ class ChandraConfig(BaseConfig):
             if self.psf_simulator == PSFSimulatorEnum.saotrace:
                 config.psf.simulator = "file"
 
+    @computed_field(return_type=Table)
     @cached_property
     def obs_info_table(self):
         """Get obs info table"""
