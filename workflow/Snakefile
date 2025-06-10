@@ -6,6 +6,9 @@ import os
 from enum import Enum
 from pathlib import Path
 from typing import ClassVar, Dict, List, Optional, Union
+from functools import cached_property
+import requests
+from io import StringIO
 
 import numpy as np
 import yaml
@@ -13,6 +16,7 @@ from astropy import units as u
 from astropy.coordinates import Angle, SkyCoord
 from astropy.time import Time
 from astropy.units import Quantity
+from astropy.table import Table
 from astropy.wcs import WCS
 from pydantic import BaseModel, validator
 from regions import CircleSkyRegion, RectangleSkyRegion, RectanglePixelRegion, PixCoord
@@ -63,8 +67,14 @@ point{{{{
 SAOTRACE_OUTPUT_FILENAME = "saotrace_output_i{idx}.fits"
 MARX_OUTPUT_FILENAME = "i{idx}_marx.fits"
 
+OCAT_URL = "https://cda.cfa.harvard.edu/srservices/ocatDetails.do"
 
-def wcs_from_header_chandra(header, x_col=11):
+X_COL_DEFAULT = {
+    "ACIS": 11,
+    "HRC": 19
+}
+
+def wcs_from_header_chandra(header, x_col=None):
     """Create WCS from event file header
     Parameters
     ----------
@@ -75,6 +85,9 @@ def wcs_from_header_chandra(header, x_col=11):
     wcs : `~astropy.wcs.WCS`
         WCS object
     """
+    if x_col is None:
+        x_col = X_COL_DEFAULT.get(header["INSTRUME"].strip())
+    
     y_col = x_col + 1
     wcs = WCS(naxis=2)
     wcs.wcs.crpix = [header[f"TCRPX{x_col}"], header[f"TCRPX{y_col}"]]
@@ -317,7 +330,7 @@ class ROIConfig(DMCopyConfig):
         )
         return region
 
-    def to_dm_copy_str(self, wcs):
+    def to_dm_copy_str(self, wcs, include_energy=True):
         """dmcopy argument"""
         bbox = self.region.to_pixel(wcs=wcs).bounding_box
         spatial = (
@@ -329,7 +342,10 @@ class ROIConfig(DMCopyConfig):
         spectral = f"energy={energy.min.to_value('eV')}:{energy.max.to_value('eV')}"
 
         selection = f"[EVENTS][{spatial}]"
-        selection += f"[{spectral}]"
+
+        if include_energy:
+            selection += f"[{spectral}]"
+        
         return selection
 
 
@@ -543,6 +559,15 @@ class ChandraConfig(BaseConfig):
 
             if self.psf_simulator == PSFSimulatorEnum.saotrace:
                 config.psf.simulator = "file"
+
+    @cached_property
+    def obs_info_table(self):
+        """Get obs info table"""
+        obs_ids = map(str, self.obs_ids)
+        r = requests.get(OCAT_URL, params={"obsid": ",".join(obs_ids), "format": "text"})
+        table = Table.read(StringIO(r.text).read(), format="ascii")
+        table.add_index("OBSID")
+        return table[1:]
 
     @classmethod
     def read(cls, path):
