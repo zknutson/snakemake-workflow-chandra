@@ -2,7 +2,12 @@
 def dmcopy_selection_str_psf(wildcards, input):
     irf_label = wildcards.irf_label
     header = fits.getheader(input[0], "EVENTS")
-    wcs = wcs_from_header_chandra(header, x_col=9)
+
+    instrument = header["INSTRUME"]
+    if "ACIS" in instrument:
+        wcs = wcs_from_header_chandra(header)
+    else:
+         wcs = wcs_from_header_chandra(header, x_col=9)
     return config_obj.irfs[irf_label].psf.to_dm_copy_str(wcs=wcs)
 
 rule project_psf:
