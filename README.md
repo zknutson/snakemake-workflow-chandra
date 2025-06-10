@@ -62,3 +62,9 @@ You can also create a report to see previews of the counts, exposure and PSF ima
 snakemake --report report.html
 open report.html
 ```
+
+You can also create a directed acyclic graph (DAG) visualization of the workflow:
+
+```bash
+snakemake --dag | dot -Tpng > dag.png
+```
