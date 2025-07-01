@@ -2,8 +2,8 @@ name: HRC-all
 path_data: data
 obs_ids:
 - 22536
-- 25020
-- 25021
+#- 25020
+#- 25021
 obs_id_ref: 22536
 background_region_file: bkg_region_hrc.reg
 roi:
@@ -14,8 +14,8 @@ roi:
     width: 10 arcsec
     bin_size: 0.125
     energy_range:
-        min: 0.5 keV
-        max: 7.0 keV
+        min: 0.01 keV
+        max: 0.3 keV
 psf_simulator: marx
 irfs:
     pks-0637:
@@ -26,8 +26,8 @@ irfs:
                 lat: +40d44m01.66900000s
             radius: 2arcsec
             energy_range:
-                min: 0.5 keV
-                max: 7.0 keV
+                min: 0.01 keV
+                max: 0.3 keV
             energy_groups: 5
             energy_step: 0.01
             background_region_file: bkg_region_hrc.reg

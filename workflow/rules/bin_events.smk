@@ -5,7 +5,8 @@ def dmcopy_selection_str(wildcards, input):
     wcs = wcs_from_header_chandra(header)
 
     include_energy = "ACIS" in header["INSTRUME"]
-    return config_obj.roi.to_dm_copy_str(wcs=wcs, include_energy=include_energy)
+    is_using_samp = "HRC" in header["INSTRUME"]
+    return config_obj.roi.to_dm_copy_str(wcs=wcs, include_energy=include_energy, is_using_samp=is_using_samp)
 
 
 rule bin_events:

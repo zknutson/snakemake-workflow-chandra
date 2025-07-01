@@ -297,7 +297,7 @@ class ROIConfig(DMCopyConfig):
         )
         return region
 
-    def to_dm_copy_str(self, wcs, include_energy=True):
+    def to_dm_copy_str(self, wcs, include_energy=True, is_using_samp=False):
         """dmcopy argument"""
         bbox = self.region.to_pixel(wcs=wcs).bounding_box
         spatial = (
@@ -306,14 +306,14 @@ class ROIConfig(DMCopyConfig):
         )
 
         energy = self.energy_range
-        spectral = "samp=10:300"
-        #spectral = f"energy={energy.min.to_value('eV')}:{energy.max.to_value('eV')}"
+        spectral = f"energy={energy.min.to_value('eV')}:{energy.max.to_value('eV')}"
 
         selection = f"[EVENTS][{spatial}]"
 
         if include_energy:
             selection += f"[{spectral}]"
-        
+        if is_using_samp:
+            selection += f"[samp={energy.min.to_value('eV')}:{energy.max.to_value('eV')}]"
         return selection
 
 
