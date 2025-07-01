@@ -1,0 +1,13 @@
+Try skipping the really long step for HRC
+filter on samp 10-200
+try giving the flux component a WCS object
+can grab the WCS object from the fits header using astropy
+attribute called fluxupsample can use it to block in the result
+
+
+
+HRC data finish running through snakemake and then run through jolideco
+residuals to the individual observations
+ACIS hard band(s) run through snakemake fully and also run through jolideco
+WCS to add to observations
+ACIS vs HRC data plot for intro

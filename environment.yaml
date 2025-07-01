@@ -20,3 +20,4 @@ dependencies:
   - ciao
   - pyciao
   - ciao-contrib
+  - sherpa

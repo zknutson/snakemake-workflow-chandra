@@ -1,11 +1,26 @@
-name: HRC-all
+name: ACIS-all-2000-5000
 path_data: data
 obs_ids:
-- 22536
-- 25020
-- 25021
-obs_id_ref: 22536
-background_region_file: bkg_region_hrc.reg
+- 17508
+- 18688
+- 18871
+- 17133
+- 17510
+- 17509
+- 17513
+- 17512
+- 17507
+- 17514
+- 17135
+- 17136
+- 19996
+- 19989
+- 17511
+- 20077
+- 17134
+- 20079
+obs_id_ref: 17509
+background_region_file: bkg_region.reg
 roi:
     center:
         frame: icrs
@@ -14,8 +29,8 @@ roi:
     width: 10 arcsec
     bin_size: 0.125
     energy_range:
-        min: 0.5 keV
-        max: 7.0 keV
+        min: 2.0 keV
+        max: 5.0 keV
 psf_simulator: marx
 irfs:
     pks-0637:
@@ -26,18 +41,18 @@ irfs:
                 lat: +40d44m01.66900000s
             radius: 2arcsec
             energy_range:
-                min: 0.5 keV
-                max: 7.0 keV
+                min: 2.0 keV
+                max: 5.0 keV
             energy_groups: 5
             energy_step: 0.01
-            background_region_file: bkg_region_hrc.reg
+            background_region_file: bkg_region.reg
         psf:
             blur: 0.07
             readout_streak: false
             pileup: false
             extended: true
             minsize: 125
-            numiter: 2
+            numiter: 50
 ciao:
     dmcopy:
         kernel: default

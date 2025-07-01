@@ -1,0 +1,250 @@
+(snakemake-workflow-chandra) [zknutson@compute-50-01 snakemake-workflow-chandra]$ snakemake --cores 4 --use-conda --configfile config/config-hrc.yaml --conda-frontend conda
+/home/zknutson/miniforge3/envs/snakemake-workflow-chandra/lib/python3.9/site-packages/snakemake/utils.py:469: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+Config file config/config.yaml is extended by additional config specified via the command line.
+/home/zknutson/miniforge3/envs/snakemake-workflow-chandra/lib/python3.9/site-packages/pydantic/_internal/_config.py:373: UserWarning: Valid config keys have changed in V2:
+* 'fields' has been removed
+  warnings.warn(message, UserWarning)
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                          count
+-------------------------  -------
+all                              1
+bin_events                       1
+chandra_repro                    1
+compute_background_simple        1
+compute_exposure_flux            1
+compute_spectral_weights         1
+download_chandra_obsid           1
+extract_spectra                  1
+find_and_copy_asolfile           1
+fit_spectra                      1
+post_process_psf                 1
+project_psf                      1
+reproject_events                 1
+simulate_psf                     1
+total                           14
+
+Select jobs to execute...
+
+[Fri Jun 20 10:56:42 2025]
+rule download_chandra_obsid:
+    output: data/22536/oif.fits, data/22536/download.done
+    log: logs/download-chandra-obsid-22536.log
+    jobid: 6
+    reason: Missing output files: data/22536/download.done
+    wildcards: obs_id=22536
+    resources: tmpdir=/tmp
+
+Activating conda environment: .snakemake/conda/5d22e8d818226cae424939d80a26e93e_
+Downloading files for ObsId 22536, total size is 291 Mb.
+
+  Type     Format      Size  0........H.........1  Download Time Average Rate
+  ---------------------------------------------------------------------------
+  evt1     fits      155 Mb  ####################            2 s  89607.2 kb/s
+  evt2     fits      125 Mb  ####################            5 s  26862.5 kb/s
+  asol     fits        4 Mb  ####################          < 1 s  19763.0 kb/s
+  mtl      fits        3 Mb  ####################          < 1 s  18856.4 kb/s
+  cntr_img jpg       567 Kb  ####################          < 1 s  5160.9 kb/s
+  osol     fits      369 Kb  ####################          < 1 s  3655.6 kb/s
+  osol     fits      367 Kb  ####################          < 1 s  3590.5 kb/s
+  osol     fits      356 Kb  ####################          < 1 s  3589.8 kb/s
+  osol     fits      353 Kb  ####################          < 1 s  3275.0 kb/s
+  eph1     fits      311 Kb  ####################          < 1 s  3119.9 kb/s
+  eph1     fits      305 Kb  ####################          < 1 s  3144.2 kb/s
+  aqual    fits      301 Kb  ####################          < 1 s  3036.2 kb/s
+  eph1     fits      279 Kb  ####################          < 1 s  2889.9 kb/s
+  dtf      fits      243 Kb  ####################          < 1 s  2546.6 kb/s
+  full_img fits      154 Kb  ####################          < 1 s  1792.9 kb/s
+  osol     fits      114 Kb  ####################          < 1 s  1310.8 kb/s
+  full_img jpg        94 Kb  ####################          < 1 s  1090.2 kb/s
+  cntr_img fits       75 Kb  ####################          < 1 s  1010.3 kb/s
+  vv       pdf        42 Kb  ####################          < 1 s  564.9 kb/s
+  oif      fits       20 Kb  ####################          < 1 s  312.8 kb/s
+  osol     fits       14 Kb  ####################          < 1 s  219.2 kb/s
+  readme   ascii      10 Kb  ####################          < 1 s  190.4 kb/s
+  eph1     fits       10 Kb  ####################          < 1 s  182.5 kb/s
+  fov      fits        5 Kb  ####################          < 1 s  94.6 kb/s
+  flt      fits        3 Kb  ####################          < 1 s  66.5 kb/s
+  dtf      fits        3 Kb  ####################          < 1 s  63.8 kb/s
+  bpix     fits        3 Kb  ####################          < 1 s  63.6 kb/s
+  msk      fits        3 Kb  ####################          < 1 s  49.4 kb/s
+
+      Total download size for ObsId 22536 = 291 Mb
+      Total download time for ObsId 22536 = 9 s
+
+Touching output file data/22536/download.done.
+[Fri Jun 20 10:56:54 2025]
+Finished job 6.
+1 of 14 steps (7%) done
+Select jobs to execute...
+
+[Fri Jun 20 10:56:54 2025]
+rule chandra_repro:
+    input: data/22536/download.done
+    output: results/my-config-hrc/22536/repro/repro.done
+    log: logs/my-config-hrc/22536/chandra-repro.log
+    jobid: 5
+    reason: Missing output files: results/my-config-hrc/22536/repro/repro.done; Input files updated by another job: data/22536/download.done
+    wildcards: config_name=my-config-hrc, obs_id=22536
+    resources: tmpdir=/tmp
+
+Activating conda environment: .snakemake/conda/5d22e8d818226cae424939d80a26e93e_
+
+Running chandra_repro
+version: 07 April 2025
+
+
+Processing input directory '/home/zknutson/PycharmProjects/snakemake-workflow-chandra/data/22536'
+
+No boresight correction update to asol file is needed.
+
+Running hrc_build_badpix to create new bad pixel file...
+
+Running hrc_process_events to reprocess the evt1.fits file...
+Output from hrc_process_events:
+# hrc_process_events (CIAO 4.17.0): The following error occurred 46 times:
+        dsHPEEVENTSEQERR -- WARNING: Out of sequence events discovered in /home/zknutson/PycharmProjects/snakemake-workflow-chandra/data/22536/secondary/hrcf22536_000N002_evt1.fits.
+# hrc_process_events (CIAO 4.17.0): WARNING: can't find a proper degap value for this raw coord. in hrcf22536_000N002_evt1.fits
+Filtering the evt1.fits file on grade and status...
+Applying the good time intervals from the flt1.fits file...
+
+Running hrc_dtfstats to recompute the average dead time corrections...
+The new level=2 event file is: /home/zknutson/PycharmProjects/snakemake-workflow-chandra/results/my-config-hrc/22536/repro/hrcf22536_repro_evt2.fits
+
+Updating the event file header with chandra_repro HISTORY record
+Creating FOV file...
+Setting observation-specific bad pixel file in local ardlib.par.
+
+Cleaning up intermediate files
+
+WARNING: Observation-specific bad pixel file set for session use:
+         /home/zknutson/PycharmProjects/snakemake-workflow-chandra/results/my-config-hrc/22536/repro/hrcf22536_repro_bpix1.fits
+         Run 'punlearn ardlib' when analysis of this dataset completed.
+
+Any issues pertaining to data quality for this observation will be listed in the Comments section of the Validation and Verification report located in:
+/home/zknutson/PycharmProjects/snakemake-workflow-chandra/results/my-config-hrc/22536/repro/axaff22536N002_VV001_vv2.pdf
+
+The data have been reprocessed.
+Start your analysis with the new products in
+/home/zknutson/PycharmProjects/snakemake-workflow-chandra/results/my-config-hrc/22536/repro
+
+Touching output file results/my-config-hrc/22536/repro/repro.done.
+[Fri Jun 20 10:57:22 2025]
+Finished job 5.
+2 of 14 steps (14%) done
+Select jobs to execute...
+
+[Fri Jun 20 10:57:22 2025]
+rule find_and_copy_asolfile:
+    input: results/my-config-hrc/22536/repro/repro.done
+    output: results/my-config-hrc/22536/repro/simulate-psf-asol-22536.fits
+    jobid: 9
+    reason: Missing output files: results/my-config-hrc/22536/repro/simulate-psf-asol-22536.fits; Input files updated by another job: results/my-config-hrc/22536/repro/repro.done
+    wildcards: config_name=my-config-hrc, obs_id=22536
+    resources: tmpdir=/tmp
+
+[Fri Jun 20 10:57:22 2025]
+rule reproject_events:
+    input: results/my-config-hrc/22536/repro/repro.done, results/my-config-hrc/22536/repro/repro.done
+    output: results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits
+    log: logs/my-config-hrc/22536/reproject-events.log
+    jobid: 4
+    reason: Missing output files: results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits; Input files updated by another job: results/my-config-hrc/22536/repro/repro.done
+    wildcards: config_name=my-config-hrc, obs_id=22536
+    resources: tmpdir=/tmp
+
+Activating conda environment: .snakemake/conda/5d22e8d818226cae424939d80a26e93e_
+/home/zknutson/miniforge3/envs/snakemake-workflow-chandra/lib/python3.9/site-packages/snakemake/utils.py:469: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+Config file config/config.yaml is extended by additional config specified via the command line.
+/home/zknutson/miniforge3/envs/snakemake-workflow-chandra/lib/python3.9/site-packages/pydantic/_internal/_config.py:373: UserWarning: Valid config keys have changed in V2:
+* 'fields' has been removed
+  warnings.warn(message, UserWarning)
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Select jobs to execute...
+[Fri Jun 20 10:57:24 2025]
+Finished job 9.
+3 of 14 steps (21%) done
+[Fri Jun 20 10:57:27 2025]
+Finished job 4.
+4 of 14 steps (29%) done
+Select jobs to execute...
+
+[Fri Jun 20 10:57:27 2025]
+rule extract_spectra:
+    input: results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits
+    output: results/my-config-hrc/22536/spectra/pks-0637/my-config-hrc-22536-pks-0637.pi, results/my-config-hrc/22536/spectra/pks-0637/my-config-hrc-22536-pks-0637.arf, results/my-config-hrc/22536/spectra/pks-0637/my-config-hrc-22536-pks-0637.rmf, results/my-config-hrc/22536/spectra/pks-0637/my-config-hrc-22536-pks-0637_grp.pi
+    log: logs/my-config-hrc/22536/spectra/pks-0637/extract-spectra.log
+    jobid: 8
+    reason: Missing output files: results/my-config-hrc/22536/spectra/pks-0637/my-config-hrc-22536-pks-0637.pi; Input files updated by another job: results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits
+    wildcards: config_name=my-config-hrc, obs_id=22536, irf_label=pks-0637
+    resources: tmpdir=/tmp
+
+Activating conda environment: .snakemake/conda/5d22e8d818226cae424939d80a26e93e_
+
+[Fri Jun 20 10:57:27 2025]
+rule bin_events:
+    input: results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits
+    output: results/my-config-hrc/22536/maps/my-config-hrc-22536-counts.fits
+    log: logs/my-config-hrc/22536/bin-events.log
+    jobid: 12
+    reason: Missing output files: results/my-config-hrc/22536/maps/my-config-hrc-22536-counts.fits; Input files updated by another job: results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits; Params have changed since last execution
+    wildcards: config_name=my-config-hrc, obs_id=22536
+    resources: tmpdir=/tmp
+
+Activating conda environment: .snakemake/conda/5d22e8d818226cae424939d80a26e93e_
+Running specextract
+Version: 26 October 2023
+
+[Fri Jun 20 10:57:28 2025]
+Finished job 12.
+5 of 14 steps (36%) done
+Select jobs to execute...
+
+[Fri Jun 20 10:57:28 2025]
+rule compute_background_simple:
+    input: results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits, results/my-config-hrc/22536/maps/my-config-hrc-22536-counts.fits
+    output: results/my-config-hrc/22536/maps/my-config-hrc-22536-background.fits
+    log: logs/my-config-hrc/22536/compute-background-simple.log
+    jobid: 13
+    reason: Missing output files: results/my-config-hrc/22536/maps/my-config-hrc-22536-background.fits; Input files updated by another job: results/my-config-hrc/22536/maps/my-config-hrc-22536-counts.fits, results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits
+    wildcards: config_name=my-config-hrc, obs_id=22536
+    resources: tmpdir=/tmp
+
+/home/zknutson/miniforge3/envs/snakemake-workflow-chandra/lib/python3.9/site-packages/snakemake/utils.py:469: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+Config file config/config.yaml is extended by additional config specified via the command line.
+/home/zknutson/miniforge3/envs/snakemake-workflow-chandra/lib/python3.9/site-packages/pydantic/_internal/_config.py:373: UserWarning: Valid config keys have changed in V2:
+* 'fields' has been removed
+  warnings.warn(message, UserWarning)
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Select jobs to execute...
+HRC responses will be unweighted.
+[Fri Jun 20 10:57:30 2025]
+Finished job 13.
+6 of 14 steps (43%) done
+# specextract (26 October 2023): ERROR results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits[sky=region(bkg_region_hrc.reg)] has zero counts. Check that the region formatting is correct (e.g. wrong region, coordinates not in sky pixels or degrees) or use the 'refcoord' parameter.
+[Fri Jun 20 10:57:31 2025]
+Error in rule extract_spectra:
+    jobid: 8
+    input: results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits
+    output: results/my-config-hrc/22536/spectra/pks-0637/my-config-hrc-22536-pks-0637.pi, results/my-config-hrc/22536/spectra/pks-0637/my-config-hrc-22536-pks-0637.arf, results/my-config-hrc/22536/spectra/pks-0637/my-config-hrc-22536-pks-0637.rmf, results/my-config-hrc/22536/spectra/pks-0637/my-config-hrc-22536-pks-0637_grp.pi
+    log: logs/my-config-hrc/22536/spectra/pks-0637/extract-spectra.log (check log file(s) for error details)
+    conda-env: /home/zknutson/PycharmProjects/snakemake-workflow-chandra/.snakemake/conda/5d22e8d818226cae424939d80a26e93e_
+    shell:
+        mkdir -p logs/my-config-hrc/22536/spectra/pks-0637/params;PFILES="logs/my-config-hrc/22536/spectra/pks-0637/params;$CONDA_PREFIX/contrib/param:$CONDA_PREFIX/param";specextract infile="results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits[sky=circle(16424.627171044398,16342.585504031356,37.93626710436189)]" outroot=results/my-config-hrc/22536/spectra/pks-0637/my-config-hrc-22536-pks-0637 energy=0.5:7.0:0.01 bkgresp=yes bkgfile="results/my-config-hrc/22536/events/my-config-hrc-22536-events.fits[sky=region(bkg_region_hrc.reg)]" clobber=yes
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2025-06-20T105639.416606.snakemake.log

@@ -306,7 +306,8 @@ class ROIConfig(DMCopyConfig):
         )
 
         energy = self.energy_range
-        spectral = f"energy={energy.min.to_value('eV')}:{energy.max.to_value('eV')}"
+        spectral = "samp=10:300"
+        #spectral = f"energy={energy.min.to_value('eV')}:{energy.max.to_value('eV')}"
 
         selection = f"[EVENTS][{spatial}]"
 
@@ -599,7 +600,7 @@ include: "rules/compute_background_simple.smk"
 include: "rules/extract_spectra.smk"
 include: "rules/fit_spectra.smk"
 include: "rules/compute_spectral_weights.smk"
-include: "rules/compute_exposure_flux.smk"
+include: "rules/compute_exposure.smk"
 include: "rules/find_and_copy_asolfile.smk"
 include: "rules/simulate_psf.smk"
 include: "rules/post_process_psf.smk"
